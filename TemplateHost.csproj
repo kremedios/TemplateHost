@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <Content Include="secure\chummy.key">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RCL_projects\JuderemediosRCL\JuderemediosRCL.csproj" />
+    <ProjectReference Include="..\..\shared_common_objects_library_projects\AppContractsSCO\AppContractsSCO.csproj" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaxMind.GeoIP2" Version="5.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Folder Include="_Archive/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="_Archive/**/*.cs" />
+    <EmbeddedResource Remove="_Archive/**/*.cs" />
+  </ItemGroup>
+
+
+
+
+</Project>

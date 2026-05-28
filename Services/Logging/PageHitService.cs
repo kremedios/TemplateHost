@@ -1,0 +1,206 @@
+using Microsoft.AspNetCore.Http;
+//using Plumspaces.Services.Geo;
+using System;
+using System.IO;
+using System.Linq;
+
+using System.Security;
+using System.Threading.Tasks;
+
+using AppContractsSCO.Services.Logging;
+
+using Host.Models.Logging;
+using Host.Models.Datetime;
+using Host.Services.Geo;
+using Host.Controllers.Logging;
+
+namespace Host.Services.Logging
+{
+    public class PageHitService : IPageHitService
+    {
+        private readonly GeoLookupService _geoService;
+        private readonly IHttpContextAccessor _http;        
+        private readonly IWebHostEnvironment _env;
+
+        public PageHitService(GeoLookupService geoService,
+                              IHttpContextAccessor http,
+                              IWebHostEnvironment env)
+        {
+            _geoService = geoService;
+            _http = http;
+            _env = env;
+        }
+
+        /// <summary>
+        /// Logs a page hit, restricted by area-based role.
+        /// </summary>
+        //public Task LogPageHitAsync(string area, string pageName, HttpContext httpContext)
+        public Task LogPageHitAsync(string area, string pageName)        
+        {
+            var httpContext = _http.HttpContext;
+            var user = httpContext.User;
+
+            // Only allow users with the correct role for the given area
+            // bool allowed = (string.Equals(area, "Rentals", StringComparison.OrdinalIgnoreCase) && user.IsInRole("Admin:Rentals"))
+            //             || (string.Equals(area, "juderemedios", StringComparison.OrdinalIgnoreCase) && user.IsInRole("Admin:Juderemedios"))
+            //             || (string.Equals(area, "remedios", StringComparison.OrdinalIgnoreCase) && user.IsInRole("Admin:Remedios"));
+
+            // if (!allowed)
+            //     throw new SecurityException($"User '{user.Identity?.Name}' is not authorized to access area '{area}'.");
+
+            var request = httpContext.Request;
+
+            // IP address (localhost-safe)
+            var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            if (ip == "::1") ip = "127.0.0.1";
+
+            // User-Agent
+            var userAgent = request.Headers["User-Agent"].ToString();
+
+            var device =
+                userAgent.Contains("Mobile", StringComparison.OrdinalIgnoreCase) ? "Mobile" :
+                userAgent.Contains("Tablet", StringComparison.OrdinalIgnoreCase) ? "Tablet" :
+                "Desktop";
+
+            var hitTime = TimeMgr.NowOnCentralTime();
+
+            // Default location values
+            string city = "local city";
+            string state = "local state";
+            string country = "local country";
+
+            // Geo lookup (safe, never crash)
+            try
+            {
+                if (ip != "127.0.0.1")
+                {
+                    var location = _geoService.Lookup(ip);
+                    city = location.City;
+                    state = location.State;
+                    country = location.Country;
+                }
+            }
+            catch
+            {
+                // swallow geo lookup failures
+            }
+
+            var hit = new PageHit
+            {
+                PageName = pageName,
+                IpAddress = ip,
+                UserAgent = userAgent,
+                Device = device,
+                City = city,
+                State = state,
+                Country = country,
+                HitTimeCentral = hitTime
+            };
+
+            // ===== FILE LOGGING =====
+            var year = hitTime.Year;
+            var baseDir = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "private",
+                area,
+                pageName,
+                "logs"
+            );
+
+            //Console.WriteLine($"@@@PageHitService: baseDir = {baseDir}");
+            Directory.CreateDirectory(baseDir);
+
+            var logFile = Path.Combine(baseDir, $"{pageName}-{year}.log");
+            var lastHitDatetimeFile = Path.Combine(baseDir, $"{pageName}-LastHitDatetime.log" );
+
+            // Read existing lines safely
+            int lineCount = 0;
+            if (File.Exists(logFile))
+            {
+                lineCount = File.ReadAllLines(logFile).Length;
+            }
+
+            string lineNbr = (lineCount + 1).ToString() + ":";
+
+            var line =
+                lineNbr + " " +
+                $"{hit.HitTimeCentral:MM-dd-yy HH:mm} | " +
+                $"{hit.IpAddress} | " +
+                $"{hit.City}, {hit.State}, {hit.Country} | " +
+                $"{hit.Device}";
+
+            ///////// try
+            File.WriteAllText(lastHitDatetimeFile, $"{hit.HitTimeCentral:MM-dd-yy HH:mm}");
+            /// end try
+
+
+
+            File.AppendAllText(logFile, line + Environment.NewLine);
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Gets the number of hits for a given page in a specific area.
+        /// </summary>
+        public int GetPageHitCount(string area, string pageName)
+        {
+            var year = TimeMgr.NowOnCentralTime().Year;
+
+            var logFile = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "private",
+                area,
+                pageName,
+                "logs",
+                $"{pageName}-{year}.log"
+            );
+
+            if (!File.Exists(logFile))
+                return 0;
+
+            return File.ReadLines(logFile)
+                       .Count(line => !string.IsNullOrWhiteSpace(line));
+        }
+
+        public string GetLastHitDatetime(string area, string pageName)
+        {
+            var logFile = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "private",
+                area,
+                pageName,
+                "logs",
+                $"{pageName}-LastHitDatetime.log"
+            );
+
+            if (!File.Exists(logFile))
+                return " ";  
+
+            return File.ReadAllText(logFile);
+        }
+
+
+
+
+public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName)
+{
+    var logHelper = new LogHelper(_env, area, pageName);
+    string logFile = logHelper.GetLogFile(pageName);
+
+    if (!System.IO.File.Exists(logFile))
+        return Task.FromResult(Enumerable.Empty<string[]>());
+
+    var entries = System.IO.File.ReadAllLines(logFile)
+        .Where(l => !string.IsNullOrWhiteSpace(l) && l.Split('|').Length >= 4)
+        .Select(l => l.Split('|'));
+
+    return Task.FromResult(entries);
+}
+
+
+
+
+
+    }
+}

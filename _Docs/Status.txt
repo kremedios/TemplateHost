@@ -1,0 +1,46 @@
+05/28/26 10:05
+- JuderemediosRCL works completely as included in TemplateHost
+- Juderemedios Admin page works
+- Juderemedios Website page works
+- Modified existing code in Program.cs in TemplateHost as well as in
+JuderemediosRCL to work on Mac. I think it makes it platform
+independent:
+Do all these latter changes make this platform independent?
+
+Yes — these changes make the Data Protection key path platform-independent.
+
+This code:
+
+var keyPath = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+    ".aspnet-keys");
+
+Directory.CreateDirectory(keyPath);
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("TemplateHost")
+    .PersistKeysToFileSystem(new DirectoryInfo(keyPath));
+
+works correctly on:
+
+Linux
+macOS
+Windows
+
+because .NET automatically resolves the proper home directory:
+
+Linux:
+
+/home/ken
+
+macOS:
+
+/Users/juderemedios
+
+Windows:
+
+C:\Users\Ken
+
+So your Data Protection cookie encryption system is now portable.
+
+However, your overall app is only platform

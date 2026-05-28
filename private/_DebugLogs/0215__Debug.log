@@ -1,0 +1,6 @@
+2026-02-15 23:08:24 - RentalProcessingService: ProcessAsync()
+2026-02-15 23:08:25 - SendEmailWithPdfAsync(): Found recipients: taxpile@gmail.com, plumrentalsusa@gmail.com
+2026-02-15 23:08:25 - SendEmailWithPdfAsync(): Adding recipient taxpile@gmail.com
+2026-02-15 23:08:25 - SendEmailWithPdfAsync(): Adding recipient plumrentalsusa@gmail.com
+2026-02-15 23:08:25 - SendEmailWithPdfAsync(): Sending email...
+2026-02-15 23:08:28 - SendEmailWithPdfAsync(): Email sent successfully.

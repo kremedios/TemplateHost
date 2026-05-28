@@ -1,0 +1,213 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/TemplateHost.csproj": {}
+  },
+  "projects": {
+    "/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/TemplateHost.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/TemplateHost.csproj",
+        "projectName": "TemplateHost",
+        "projectPath": "/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/TemplateHost.csproj",
+        "packagesPath": "/Users/juderemedios/.nuget/packages/",
+        "outputPath": "/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/juderemedios/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj": {
+                "projectPath": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj"
+              },
+              "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj": {
+                "projectPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MaxMind.GeoIP2": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.*, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.*, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj",
+        "projectName": "JuderemediosRCL",
+        "projectPath": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj",
+        "packagesPath": "/Users/juderemedios/.nuget/packages/",
+        "outputPath": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/juderemedios/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj": {
+                "projectPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj",
+        "projectName": "AppContractsSCO",
+        "projectPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj",
+        "packagesPath": "/Users/juderemedios/.nuget/packages/",
+        "outputPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/juderemedios/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.420/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

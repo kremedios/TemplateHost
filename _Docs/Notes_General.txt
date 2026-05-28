@@ -1,0 +1,21 @@
+GENERAL NOTES
+
+- This is a template host app. I've designed the host app to be an
+MVC web app.
+
+- A host app serves to "host razor class libraries (RCL's)".
+A complete MVC web app may be comprised of the host app and one RCL,
+e.g., JuderemediosRCL in host app, say JudeRemedios
+
+- The host app can be viewed as an app with Areas, such the area Juderemedios
+
+- This host app implements services such as:
+    - Geo
+    - Logging (page hit service)
+    - Security
+
+- It contains a GeoIP database
+
+- It contains keys
+
+- 
