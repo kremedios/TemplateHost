@@ -18,4 +18,8 @@ e.g., JuderemediosRCL in host app, say JudeRemedios
 
 - It contains keys
 
-- 
+- You are now in this pattern:
+
+Host owns runtime
+RCL owns features
+Host only wires assemblies

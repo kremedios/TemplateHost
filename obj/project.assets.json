@@ -1038,6 +1038,19 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "RealEstateRCL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/RealEstateRCL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/RealEstateRCL.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -2812,6 +2825,11 @@
       "type": "project",
       "path": "../../RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj",
       "msbuildProject": "../../RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj"
+    },
+    "RealEstateRCL/1.0.0": {
+      "type": "project",
+      "path": "../../RCL_projects/RealEstateRCL/RealEstateRCL.csproj",
+      "msbuildProject": "../../RCL_projects/RealEstateRCL/RealEstateRCL.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2820,7 +2838,8 @@
       "JuderemediosRCL >= 1.0.0",
       "MaxMind.GeoIP2 >= 5.4.1",
       "Microsoft.EntityFrameworkCore >= 8.*",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 8.*"
+      "Microsoft.EntityFrameworkCore.SqlServer >= 8.*",
+      "RealEstateRCL >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2850,6 +2869,9 @@
           "projectReferences": {
             "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj": {
               "projectPath": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj"
+            },
+            "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/RealEstateRCL.csproj": {
+              "projectPath": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/RealEstateRCL.csproj"
             },
             "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj": {
               "projectPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj"

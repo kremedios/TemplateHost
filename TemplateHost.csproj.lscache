@@ -82,9 +82,10 @@ Services/Security/
  SecureSettingsLoader.cs
 
 [metadataReferences]
-../../
- RCL_projects/JuderemediosRCL/obj/Debug/net8.0/ref/JuderemediosRCL.dll
- shared_common_objects_library_projects/AppContractsSCO/obj/Debug/net8.0/ref/AppContractsSCO.dll
+../../RCL_projects/
+ JuderemediosRCL/obj/Debug/net8.0/ref/JuderemediosRCL.dll
+ RealEstateRCL/obj/Debug/net8.0/ref/RealEstateRCL.dll
+../../shared_common_objects_library_projects/AppContractsSCO/obj/Debug/net8.0/ref/AppContractsSCO.dll
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/8.0.26/ref/net8.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll

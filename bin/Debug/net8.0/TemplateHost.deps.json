@@ -12,7 +12,8 @@
           "JuderemediosRCL": "1.0.0",
           "MaxMind.GeoIP2": "5.4.1",
           "Microsoft.EntityFrameworkCore": "8.0.27",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.27"
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.27",
+          "RealEstateRCL": "1.0.0"
         },
         "runtime": {
           "TemplateHost.dll": {}
@@ -593,6 +594,14 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "RealEstateRCL/1.0.0": {
+        "runtime": {
+          "RealEstateRCL.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1007,6 +1016,11 @@
       "sha512": ""
     },
     "JuderemediosRCL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RealEstateRCL/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

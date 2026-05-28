@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RCL_projects\JuderemediosRCL\JuderemediosRCL.csproj" />
+    <ProjectReference Include="..\..\RCL_projects\RealEstateRCL\RealEstateRCL.csproj" />
     <ProjectReference Include="..\..\shared_common_objects_library_projects\AppContractsSCO\AppContractsSCO.csproj" />    
   </ItemGroup>
 

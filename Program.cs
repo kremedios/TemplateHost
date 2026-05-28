@@ -11,6 +11,11 @@ using AppContractsSCO.Configuration;
 using Host.Services.Geo;
 using Host.Services.Logging;
 
+using JuderemediosRCL.Infrastructure;
+using RealEstateRCL.Infrastructure;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -92,8 +97,19 @@ builder.Services.AddAuthorization();
 // =====================
 // MVC + RCL
 // =====================
+/*
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(typeof(JuderemediosRCL.Areas.Juderemedios.Controllers.AdminAuthController).Assembly);
+*/
+/*
+builder.Services.AddControllersWithViews()
+    .AddApplicationPart(typeof(JuderemediosRCL.Areas.Juderemedios.Controllers.AdminAuthController).Assembly)
+    .AddApplicationPart(typeof(RealEstateRCL.Areas.RealEstate.Controllers.HomeController).Assembly);
+*/
+builder.Services.AddControllersWithViews()
+    .AddApplicationPart(typeof(JuderemediosRCLMarker).Assembly)
+    .AddApplicationPart(typeof(RealEstateRCLMarker).Assembly);
+
 
 var app = builder.Build();
 
