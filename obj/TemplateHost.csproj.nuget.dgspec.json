@@ -175,7 +175,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj": {
+                "projectPath": "/Users/juderemedios/Documents/_KEN/projects/shared_common_objects_library_projects/AppContractsSCO/AppContractsSCO.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

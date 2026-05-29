@@ -596,6 +596,9 @@
         }
       },
       "RealEstateRCL/1.0.0": {
+        "dependencies": {
+          "AppContractsSCO": "1.0.0"
+        },
         "runtime": {
           "RealEstateRCL.dll": {
             "assemblyVersion": "1.0.0",

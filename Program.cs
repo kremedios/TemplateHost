@@ -2,15 +2,23 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using System.IO;
 
+/**
+Host associated
+*/
 using TemplateHost.Services.Security;
+using Host.Services.Geo;
+using Host.Services.Logging;
 
+/**
+Shared Common Objects library AppContractsSCO associated
+*/
 using AppContractsSCO.Services.Logging;
 using AppContractsSCO.Services.Security;
 using AppContractsSCO.Configuration;
 
-using Host.Services.Geo;
-using Host.Services.Logging;
-
+/**
+RCL associated
+*/
 using JuderemediosRCL.Infrastructure;
 using RealEstateRCL.Infrastructure;
 
@@ -71,7 +79,7 @@ var keyPath = Path.Combine(
 
 Directory.CreateDirectory(keyPath);
 
- keyPath = Path.Combine(
+keyPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
     ".aspnet-keys-template");
 
@@ -105,6 +113,9 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(typeof(JuderemediosRCL.Areas.Juderemedios.Controllers.AdminAuthController).Assembly)
     .AddApplicationPart(typeof(RealEstateRCL.Areas.RealEstate.Controllers.HomeController).Assembly);
+*/
+/**
+RCL associated
 */
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(typeof(JuderemediosRCLMarker).Assembly)
