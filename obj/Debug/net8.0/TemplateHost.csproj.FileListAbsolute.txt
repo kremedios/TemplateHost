@@ -175,3 +175,4 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.pdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.genruntimeconfig.cache
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/ref/TemplateHost.dll
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/realEstate/Keswick/KeswickForSaleSettings.json

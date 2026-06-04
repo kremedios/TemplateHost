@@ -15,6 +15,9 @@ Shared Common Objects library AppContractsSCO associated
 using AppContractsSCO.Services.Logging;
 using AppContractsSCO.Services.Security;
 using AppContractsSCO.Configuration;
+using AppContractsSCO.Services.RealEstate;
+
+//using AppContractsSCO.Services.RealEstate.ForSale;
 
 /**
 RCL associated
@@ -61,7 +64,11 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
 
 
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IPageHitService, PageHitService>();
+
+//builder.Services.AddSingleton<IForSaleSettingsService>();
+builder.Services.AddScoped<IForSaleSettingsService, ForSaleSettingsService>();
 
 
 // =====================
