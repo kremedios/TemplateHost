@@ -81,12 +81,27 @@ namespace TemplateHost.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
+/*
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
             return RedirectToAction("Login");
         }
+*/
+public async Task<IActionResult> Logout()
+{
+    string module = "";
+
+    if (User.IsInRole("Admin:juderemedios"))
+        module = "juderemedios";
+    else if (User.IsInRole("Admin:keswick"))
+        module = "keswick";
+
+    await HttpContext.SignOutAsync("Cookies");
+
+    return RedirectToAction("Login", new { module });
+}
+
     }
 }

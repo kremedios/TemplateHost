@@ -25,15 +25,7 @@ public class ForSaleSettingsService : IForSaleSettingsService
             _settingsFilename);
 
 
-/*
-    public ForSaleSettings Load()
-    {
-        var json = File.ReadAllText(FilePath);
 
-        return JsonSerializer.Deserialize<ForSaleSettings>(json)
-               ?? new ForSaleSettings();
-    }
-*/
         public ForSaleSettings Load(string webpageName,
                                     string settingsFilename)
     {
@@ -47,16 +39,7 @@ public class ForSaleSettingsService : IForSaleSettingsService
     }
 
 
-/*
-    public void Save(ForSaleSettings settings)
-    {
-        var json = JsonSerializer.Serialize(
-            settings,
-            new JsonSerializerOptions { WriteIndented = true });
 
-        File.WriteAllText(FilePath, json);
-    }
-*/
     public void Save(string webpageName, string settingsFilename, ForSaleSettings settings)
     {
         var filePath = Path.Combine(

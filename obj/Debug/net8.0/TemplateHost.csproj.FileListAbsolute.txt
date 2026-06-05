@@ -89,6 +89,7 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/RealEstateRCL.staticwebassets.runtime.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/appsettings.Development.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/realEstate/Keswick/KeswickForSaleSettings.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/secure/chummy.key
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost.staticwebassets.runtime.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost
@@ -175,4 +176,3 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.pdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.genruntimeconfig.cache
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/ref/TemplateHost.dll
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/realEstate/Keswick/KeswickForSaleSettings.json
