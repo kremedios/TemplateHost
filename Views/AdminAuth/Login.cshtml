@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Admin Login";
+    var module = Context.Request.Query["module"];
+    var moduleName = Context.Request.Query["module"].ToString();
+}
+
+<h2>Admin Login: @((moduleName ?? "").ToUpper())</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div style="color:red;margin-bottom:10px;">
+        @ViewBag.Error
+    </div>
+}
+
+<form method="post"
+      asp-controller="AdminAuth"
+      asp-action="Login">
+
+    @Html.AntiForgeryToken()
+
+    <!-- IMPORTANT: preserve module -->
+    <input type="hidden" name="module" value="@module" />
+
+    <!-- IMPORTANT: preserve returnUrl -->
+    <input type="hidden" name="returnUrl"
+           value="@Context.Request.Query["returnUrl"]" />
+
+    <div>
+        <label>Username</label><br />
+        <input type="text" name="username" />
+    </div>
+
+    <div style="margin-top:10px;">
+        <label>Password</label><br />
+        <input type="password" name="password" />
+    </div>
+
+    <div style="margin-top:15px;">
+        <button type="submit">Login</button>
+    </div>
+
+</form>

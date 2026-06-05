@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qdPww3GDYXVtJJFt4IqLx/PCpi1k7Fb8mtKoeddjn3o=",
+  "Hash": "VeTCAC8hT6xqzUXP8FhNQPaPRMvo4GP8cFWSjPr76w0=",
   "Source": "TemplateHost",
   "BasePath": "_content/TemplateHost",
   "Mode": "Default",
@@ -12,10 +12,10 @@
       "Source": "JuderemediosRCL",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
       "AdditionalPublishProperties": "",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;Configuration;Platform;TargetFramework;RuntimeIdentifier;SelfContained",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
       "AdditionalBuildProperties": "",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;Configuration;Platform;TargetFramework;RuntimeIdentifier;SelfContained"
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     },
     {
       "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/RealEstateRCL.csproj",
@@ -23,10 +23,10 @@
       "Source": "RealEstateRCL",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
       "AdditionalPublishProperties": "",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;Configuration;Platform;TargetFramework;RuntimeIdentifier;SelfContained",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
       "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
       "AdditionalBuildProperties": "",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;Configuration;Platform;TargetFramework;RuntimeIdentifier;SelfContained"
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
     }
   ],
   "DiscoveryPatterns": [

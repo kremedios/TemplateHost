@@ -105,6 +105,29 @@ builder.Services.AddAuthentication("Cookies")
         options.Cookie.Name = "TemplateHost.Auth";
         options.LoginPath = "/Juderemedios/AdminAuth/Login";
         options.LogoutPath = "/logout";
+
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnRedirectToLogin = context =>
+            {
+                var path = context.Request.Path.Value ?? "";
+
+                string module = "general";
+
+                if (path.Contains("/RealEstate"))
+                    module = "keswick";
+                else if (path.Contains("/Juderemedios"))
+                    module = "juderemedios";
+
+                var returnUrl = context.Request.Path + context.Request.QueryString;
+
+                context.Response.Redirect(
+                    $"/AdminAuth/Login?module={module}&returnUrl={returnUrl}");
+
+                return Task.CompletedTask;
+            }
+        };
+
     });
 
 builder.Services.AddAuthorization();

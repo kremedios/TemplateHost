@@ -23,3 +23,15 @@ e.g., JuderemediosRCL in host app, say JudeRemedios
 Host owns runtime
 RCL owns features
 Host only wires assemblies
+
+06/05/26 Update
+TemplateHost owns:
+- Login UI
+- Authentication logic
+- Cookie creation
+- Role assignment for ALL modules
+
+RCLs own:
+- [Authorize] only
+- No login controllers
+- No auth logic
