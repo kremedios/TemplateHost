@@ -57,6 +57,11 @@ namespace TemplateHost.Controllers
             if (username != validUser || password != validPass)
             {
                 ViewBag.Error = "Invalid credentials";
+
+                //try
+                 ViewBag.Module = module;
+                ViewBag.ReturnUrl = returnUrl;
+
                 return View();
             }
 

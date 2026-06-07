@@ -1,10 +1,23 @@
-@{
+@*{
     ViewData["Title"] = "Admin Login";
     var module = Context.Request.Query["module"];
     var moduleName = Context.Request.Query["module"].ToString();
+}*@
+
+@{
+    ViewData["Title"] = "Admin Login";
+
+    var module =
+        ViewBag.Module?.ToString()
+        ?? Context.Request.Query["module"].ToString();
+
+    var returnUrl =
+        ViewBag.ReturnUrl?.ToString()
+        ?? Context.Request.Query["returnUrl"].ToString();
 }
 
-<h2>Admin Login: @((moduleName ?? "").ToUpper())</h2>
+@*<h2>Admin Login: @((moduleName ?? "").ToUpper())</h2>*@
+<h2>Admin Login: @module.ToUpper()</h2>
 
 @if (ViewBag.Error != null)
 {
@@ -23,8 +36,10 @@
     <input type="hidden" name="module" value="@module" />
 
     <!-- IMPORTANT: preserve returnUrl -->
+    <!--<input type="hidden" name="returnUrl"
+           value="@*Context.*@Request.Query["returnUrl"]"/>-->
     <input type="hidden" name="returnUrl"
-           value="@Context.Request.Query["returnUrl"]" />
+       value="@returnUrl" />
 
     <div>
         <label>Username</label><br />

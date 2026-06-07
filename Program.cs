@@ -103,7 +103,11 @@ builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
         options.Cookie.Name = "TemplateHost.Auth";
-        options.LoginPath = "/Juderemedios/AdminAuth/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+        options.SlidingExpiration = true;
+
+        //options.LoginPath = "/Juderemedios/AdminAuth/Login";
+        options.LoginPath = "/AdminAuth/Login";
         options.LogoutPath = "/logout";
 
         options.Events = new CookieAuthenticationEvents
