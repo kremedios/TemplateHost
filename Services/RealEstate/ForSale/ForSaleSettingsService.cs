@@ -28,15 +28,15 @@ public class ForSaleSettingsService : IForSaleSettingsService
 
         public ForSaleSettings Load(string webpageName,
                                     string settingsFilename)
-    {
-        _webpageName = webpageName;
-        _settingsFilename = settingsFilename;
+        {
+            _webpageName = webpageName;
+            _settingsFilename = settingsFilename;
 
-        var json = File.ReadAllText(FilePath);
+            var json = File.ReadAllText(FilePath);
 
-        return JsonSerializer.Deserialize<ForSaleSettings>(json)
-               ?? new ForSaleSettings();
-    }
+            return JsonSerializer.Deserialize<ForSaleSettings>(json)
+                ?? new ForSaleSettings();
+        }
 
 
 

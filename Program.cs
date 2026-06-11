@@ -16,6 +16,12 @@ using AppContractsSCO.Services.Logging;
 using AppContractsSCO.Services.Security;
 using AppContractsSCO.Configuration;
 using AppContractsSCO.Services.RealEstate;
+//using AppContractsSCO.Models.RealEstate.ForSale;
+
+using AppContractsSCO.Models.Common;
+using AppContractsSCO.Services.Common;
+
+
 
 //using AppContractsSCO.Services.RealEstate.ForSale;
 
@@ -68,7 +74,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPageHitService, PageHitService>();
 
 //builder.Services.AddSingleton<IForSaleSettingsService>();
-builder.Services.AddScoped<IForSaleSettingsService, ForSaleSettingsService>();
+builder.Services.AddScoped<IForSaleSettingsService, 
+                           ForSaleSettingsService>();
+
+builder.Services.AddScoped<ICommonForSaleSettingsService,
+                           CommonForSaleSettingsService>();
 
 
 // =====================

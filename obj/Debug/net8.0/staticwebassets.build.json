@@ -1,11 +1,22 @@
 {
   "Version": 1,
-  "Hash": "pMIK04P6fheD1TBMAwGQ19GYDhxf3l9lHmDnjQ9b/eY=",
+  "Hash": "0mabsO203T+aW0MK0vMT0ujQIFSqyPqcpD52N3bijtE=",
   "Source": "TemplateHost",
   "BasePath": "_content/TemplateHost",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/ForsaleRCL.csproj",
+      "Version": 2,
+      "Source": "ForsaleRCL",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    },
     {
       "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/JuderemediosRCL.csproj",
       "Version": 2,
@@ -30,6 +41,13 @@
     }
   ],
   "DiscoveryPatterns": [
+    {
+      "Name": "ForsaleRCL/wwwroot",
+      "Source": "ForsaleRCL",
+      "ContentRoot": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/wwwroot/",
+      "BasePath": "_content/ForsaleRCL",
+      "Pattern": "**"
+    },
     {
       "Name": "JuderemediosRCL/wwwroot",
       "Source": "JuderemediosRCL",
@@ -1232,6 +1250,63 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/LICENSE.txt"
     },
     {
+      "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/obj/Debug/net8.0/scopedcss/projectbundle/ForsaleRCL.bundle.scp.css",
+      "SourceId": "ForsaleRCL",
+      "SourceType": "Project",
+      "ContentRoot": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "BasePath": "_content/ForsaleRCL",
+      "RelativePath": "ForsaleRCL.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/obj/Debug/net8.0/scopedcss/projectbundle/ForsaleRCL.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/wwwroot/background.png",
+      "SourceId": "ForsaleRCL",
+      "SourceType": "Project",
+      "ContentRoot": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/wwwroot/",
+      "BasePath": "_content/ForsaleRCL",
+      "RelativePath": "background.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/background.png"
+    },
+    {
+      "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/wwwroot/exampleJsInterop.js",
+      "SourceId": "ForsaleRCL",
+      "SourceType": "Project",
+      "ContentRoot": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/ForsaleRCL/wwwroot/",
+      "BasePath": "_content/ForsaleRCL",
+      "RelativePath": "exampleJsInterop.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/exampleJsInterop.js"
+    },
+    {
       "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/JuderemediosRCL/obj/Debug/net8.0/scopedcss/projectbundle/JuderemediosRCL.bundle.scp.css",
       "SourceId": "JuderemediosRCL",
       "SourceType": "Project",
@@ -1667,6 +1742,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/contact.png"
+    },
+    {
+      "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/wwwroot/images/map.png",
+      "SourceId": "RealEstateRCL",
+      "SourceType": "Project",
+      "ContentRoot": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/wwwroot/",
+      "BasePath": "_content/RealEstateRCL",
+      "RelativePath": "images/map.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/map.png"
     },
     {
       "Identity": "/Users/juderemedios/Documents/_KEN/projects/RCL_projects/RealEstateRCL/wwwroot/images/miracle_2.jpg",
