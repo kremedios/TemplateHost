@@ -3,7 +3,7 @@ using System.Text.Json;
 using AppContractsSCO.Services.Common;
 using AppContractsSCO.Models.Common;
 using Microsoft.AspNetCore.Mvc;
-//using AppContractsSCO.Services.RealEstate;
+
 
 
 public class CommonForSaleSettingsService : ICommonForSaleSettingsService
@@ -17,23 +17,19 @@ public class CommonForSaleSettingsService : ICommonForSaleSettingsService
         _env = env;
     }
 
-    /*
-    private string FilePath =>
-        Path.Combine(
-            _env.ContentRootPath,
-            "private",
-            "realEstate",
-            //"Keswick",
-            _webpageName,
-            //"KeswickForSaleSettings.json"
-            _settingsFilename);
-    */
 
 
+/*
         public CommonForSaleSettings Load(string webpageName,
                                     string settingsFilename,
                                     string area)
+*/
+         public PropertyPageModel Load(string webpageName,
+                                    string settingsFilename,
+                                    string area)
         {
+            Console.WriteLine("TemplateHost:CommonForSaleSettingsService: Load(.) @A");
+
             _webpageName = webpageName;
             _settingsFilename = settingsFilename;
 
@@ -44,12 +40,16 @@ public class CommonForSaleSettingsService : ICommonForSaleSettingsService
                                 _webpageName,
                                 _settingsFilename);
 
-            //var json = File.ReadAllText(FilePath);
+
+           
             var json = File.ReadAllText(filePath);
 
 
-            return JsonSerializer.Deserialize<CommonForSaleSettings>(json)
-                ?? new CommonForSaleSettings();
+            //return JsonSerializer.Deserialize<CommonForSaleSettings>(json)
+            //    ?? new CommonForSaleSettings();
+                var model = JsonSerializer.Deserialize<PropertyPageModel>(json);
+
+                return model;
         }
 
 
@@ -57,9 +57,9 @@ public class CommonForSaleSettingsService : ICommonForSaleSettingsService
     public void Save(string webpageName, 
                      string settingsFilename, 
                      CommonForSaleSettings settings,
+                     //PropertyPageModel settings,
                      string area)
     {
-        Console.WriteLine($"TemplateHost:ForSaleSettingsService: %%%%%%%%%%%% BEFORE");
         var filePath = Path.Combine(
             _env.ContentRootPath,
             "private",
@@ -67,7 +67,7 @@ public class CommonForSaleSettingsService : ICommonForSaleSettingsService
             area,
             webpageName,
             settingsFilename);
-        Console.WriteLine($"TemplateHost:ForSaleSettingsService: %%%%%%%%%%%% filePath= {filePath}");
+        
 
         var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions
         {

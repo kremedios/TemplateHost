@@ -79,6 +79,7 @@ namespace TemplateHost.Controllers
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync("Cookies", principal);
+            Console.WriteLine($">>>>>>TemplateHost: AdminAuthController: Login(.) returnUrl= {returnUrl}");
 
             // STEP 3: redirect logic
             if (!string.IsNullOrEmpty(returnUrl))
@@ -102,6 +103,8 @@ public async Task<IActionResult> Logout()
         module = "juderemedios";
     else if (User.IsInRole("Admin:keswick"))
         module = "keswick";
+    else if (User.IsInRole("Admin:hondacivic"))
+        module = "hondacivic";
 
     await HttpContext.SignOutAsync("Cookies");
 

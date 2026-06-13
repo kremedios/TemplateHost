@@ -132,6 +132,8 @@ builder.Services.AddAuthentication("Cookies")
                     module = "keswick";
                 else if (path.Contains("/Juderemedios"))
                     module = "juderemedios";
+                else if (path.Contains("/Hondacivic"))
+                    module = "hondacivic";
 
                 var returnUrl = context.Request.Path + context.Request.QueryString;
 
