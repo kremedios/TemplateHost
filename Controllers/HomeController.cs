@@ -15,7 +15,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        //return View();
+        return RedirectToAction("Keswick", "Forsale", new { area = "RealEstate" });
     }
 
     public IActionResult Privacy()

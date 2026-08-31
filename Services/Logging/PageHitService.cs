@@ -18,6 +18,7 @@ namespace Host.Services.Logging
 {
     public class PageHitService : IPageHitService
     {
+        //private readonly BotDetector _botDetector;
         private readonly GeoLookupService _geoService;
         private readonly IHttpContextAccessor _http;        
         private readonly IWebHostEnvironment _env;
@@ -29,6 +30,7 @@ namespace Host.Services.Logging
             _geoService = geoService;
             _http = http;
             _env = env;
+            //_botDetector = botDetector;
         }
 
         /// <summary>
@@ -56,6 +58,15 @@ namespace Host.Services.Logging
 
             // User-Agent
             var userAgent = request.Headers["User-Agent"].ToString();
+
+
+            // Bot Check -- skip logging entirely for known bots
+            //if (_botDetector.IsKnownBot(userAgent))
+            //{
+            //    return Task.CompletedTask;
+            //}
+
+
 
             var device =
                 userAgent.Contains("Mobile", StringComparison.OrdinalIgnoreCase) ? "Mobile" :

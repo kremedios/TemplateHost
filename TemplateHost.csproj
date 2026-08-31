@@ -35,7 +35,13 @@
     <EmbeddedResource Remove="_Archive/**/*.cs" />
   </ItemGroup>
 
-
+<!--
+  <ItemGroup>
+    <None Update="crawler-user-agents.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  -->
 
 
 </Project>

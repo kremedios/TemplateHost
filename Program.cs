@@ -69,6 +69,12 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
 //For GeoIP - end
 
 
+//For bot detection - begin
+//builder.Services.AddSingleton<BotDetector>(sp =>
+//    new BotDetector(Path.Combine(AppContext.BaseDirectory, "crawler-user-agents.json")));
+//For bot detection - end
+
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPageHitService, PageHitService>();
@@ -79,6 +85,12 @@ builder.Services.AddScoped<IForSaleSettingsService,
 
 builder.Services.AddScoped<ICommonForSaleSettingsService,
                            CommonForSaleSettingsService>();
+
+
+// ==============
+// Add Razor Pages (8/27/26)
+// ==============
+builder.Services.AddRazorPages();
 
 
 // =====================
@@ -187,6 +199,14 @@ app.Use(async (ctx, next) =>
     Console.WriteLine("Path: " + ctx.Request.Path);
     Console.WriteLine("Cookie: " + ctx.Request.Headers.Cookie);
     Console.WriteLine("User Authenticated: " + ctx.User.Identity?.IsAuthenticated);
+
+    Console.WriteLine("User Name: " + ctx.User.Identity?.Name);
+
+    foreach (var claim in ctx.User.Claims)
+    {
+        Console.WriteLine($"CLAIM: {claim.Type} = {claim.Value}");
+    }
+
     await next();
 });
 
@@ -202,12 +222,22 @@ app.UseStaticFiles();
 // =====================
 // ROUTES
 // =====================
-app.MapControllerRoute(
+//app.MapControllerRoute(
+//   name: "areas",
+//    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+
+    app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//Added following 8/27/26
+app.MapRazorPages();
+
+//For debugging
+app.UseDeveloperExceptionPage();
 
 app.Run();
