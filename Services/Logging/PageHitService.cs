@@ -138,7 +138,8 @@ namespace Host.Services.Logging
                 $"{hit.HitTimeCentral:MM-dd-yy HH:mm} | " +
                 $"{hit.IpAddress} | " +
                 $"{hit.City}, {hit.State}, {hit.Country} | " +
-                $"{hit.Device}";
+                $"{hit.Device} | " +
+                $"{hit.UserAgent}";
 
             ///////// try
             File.WriteAllText(lastHitDatetimeFile, $"{hit.HitTimeCentral:MM-dd-yy HH:mm}");
