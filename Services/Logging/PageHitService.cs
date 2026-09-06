@@ -8,11 +8,13 @@ using System.Security;
 using System.Threading.Tasks;
 
 using AppContractsSCO.Services.Logging;
+using AppContractsSCO.Models.Common;
 
 using Host.Models.Logging;
 using Host.Models.Datetime;
 using Host.Services.Geo;
 using Host.Controllers.Logging;
+using System.Net;
 
 namespace Host.Services.Logging
 {
@@ -55,6 +57,26 @@ namespace Host.Services.Logging
             // IP address (localhost-safe)
             var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             if (ip == "::1") ip = "127.0.0.1";
+
+
+
+            //=== Process the IP ===
+            //Add IP for temporary storage and evaluation
+            HitStore.Add(ip);
+
+
+            //Determine if too many hits per time period ==> unfriendly bot (not just a crawler)
+            int maxAllowableHits = 10;
+            int nbrMinutesInTimeSpanWindow = 1;
+            bool allowable = HitStore.IsWithinLimit(ip,
+                                                    maxAllowableHits,
+                                                    TimeSpan.FromMinutes(nbrMinutesInTimeSpanWindow));
+            //======================
+
+
+
+
+
 
             // User-Agent
             var userAgent = request.Headers["User-Agent"].ToString();
@@ -108,6 +130,17 @@ namespace Host.Services.Logging
                 HitTimeCentral = hitTime
             };
 
+
+
+            //== Process the IP =======
+            //Temp not use while capturing initial IP data
+           //// ProcessIp(hit.IpAddress, hit.Country);
+            //=========================
+
+
+
+
+
             // ===== FILE LOGGING =====
             var year = hitTime.Year;
             var baseDir = Path.Combine(
@@ -138,7 +171,8 @@ namespace Host.Services.Logging
                 $"{hit.HitTimeCentral:MM-dd-yy HH:mm} | " +
                 $"{hit.IpAddress} | " +
                 $"{hit.City}, {hit.State}, {hit.Country} | " +
-                $"{hit.Device} | " +
+                //$"{hit.Device} | " +
+                $"{hit.IpAddress}" + 
                 $"{hit.UserAgent}";
 
             ///////// try
@@ -151,6 +185,25 @@ namespace Host.Services.Logging
 
             return Task.CompletedTask;
         }
+
+
+
+
+
+
+
+        private void ProcessIp(string IpAddress, string country)
+        {
+            var ipRecord = IpStore.Add(IpAddress, country);
+            
+            return;
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Gets the number of hits for a given page in a specific area.
