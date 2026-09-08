@@ -85,3 +85,13 @@
 /home/ken/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.pdb
 /home/ken/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.genruntimeconfig.cache
 /home/ken/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/ref/TemplateHost.dll
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.AssemblyReference.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.GeneratedMSBuildEditorConfig.editorconfig
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfoInputs.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.CoreCompileInputs.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.sourcelink.json

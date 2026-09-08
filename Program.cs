@@ -93,6 +93,26 @@ builder.Services.AddScoped<ICommonForSaleSettingsService,
 builder.Services.AddRazorPages();
 
 
+
+// =============
+// Load file containing IP screening information upon web app start up
+// into the static class IpStore. IpStore is used to evaluate an incoming
+// IP address.
+// =============
+var ipStorePath = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "Services",
+    "Logging",
+    "IpStore.json");
+
+IpStore.Load(ipStorePath);
+
+
+
+
+
+
+
 // =====================
 // DATA PROTECTION (ONLY ONCE)
 // =====================

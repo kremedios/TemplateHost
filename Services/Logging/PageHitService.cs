@@ -132,16 +132,17 @@ namespace Host.Services.Logging
 
 
 
-            //== Process the IP =======
-            //Temp not use while capturing initial IP data
-           //// ProcessIp(hit.IpAddress, hit.Country);
+            //== Evaluate the IP =======
+            IpEvaluation IpAction = EvaluateIp(hit.IpAddress);
             //=========================
 
+            if (IpAction == IpEvaluation.AllowAndDoNotRegister)
+                return Task.CompletedTask; //Exit method without logging anything
+            
 
 
 
-
-            // ===== FILE LOGGING =====
+            // ===== FILE LOGGING  - begin =====
             var year = hitTime.Year;
             var baseDir = Path.Combine(
                 Directory.GetCurrentDirectory(),
@@ -182,6 +183,10 @@ namespace Host.Services.Logging
 
 
             File.AppendAllText(logFile, line + Environment.NewLine);
+             // ===== FILE LOGGING  - end =====
+
+
+
 
             return Task.CompletedTask;
         }
@@ -191,12 +196,39 @@ namespace Host.Services.Logging
 
 
 
+        /**
+        Using IpStore as reference for IP addresses and bots and associated entities 
+        we return the action that guides the execution of the program, eg, blocking
+        access or not, and whether the hit should be registered.  Namely, we don't
+        want bots to examine, but we don't want to register their hits as it doesn't
+        reflect human hits.
 
-        private void ProcessIp(string IpAddress, string country)
+        Return one of:
+        - IpEvaluation.AllowAndRegister
+        - IpEvaluation.AllowAndDoNotRegister
+        - IpEvaluation.Block
+        */
+        private IpEvaluation EvaluateIp(string IpAddress)
         {
-            var ipRecord = IpStore.Add(IpAddress, country);
-            
-            return;
+            //Determine if IpAddress is already in IpStore, i.e., if hit comes from non-human, e.g., bot
+            var IpRecord = IpStore.Get(IpAddress);
+            if (IpRecord is null)
+                return(IpEvaluation.AllowAndRegister);//IpAddress is not in bot file IpStore
+
+            var accessIsBlocked = IpRecord.AccessIsBlocked;
+            var hitIsToBeRegistered = IpRecord.HitIsToBeRegistered;
+
+            IpEvaluation returnVal = IpEvaluation.AllowAndRegister;//default
+            if (!accessIsBlocked && !hitIsToBeRegistered)
+                returnVal = IpEvaluation.AllowAndDoNotRegister;
+            else if (!accessIsBlocked && hitIsToBeRegistered )
+                returnVal = IpEvaluation.AllowAndRegister;
+            else if (accessIsBlocked)
+                returnVal = IpEvaluation.Block;
+            else
+                returnVal = IpEvaluation.AllowAndDoNotRegister;
+
+            return returnVal;
         }
 
 
@@ -262,6 +294,30 @@ public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName
 
     return Task.FromResult(entries);
 }
+
+
+
+
+
+
+        /**
+        Given an IP, decide whether or not to issue a bool as to whether to block, say access
+        */
+        public bool BlockAccess()
+        {
+            bool returnVal = false;
+            var httpContext = _http.HttpContext;
+
+            var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+            //Use IpStore as reference for non-human IP addresses
+            IpEvaluation ipAction = EvaluateIp(ip);
+
+            if (ipAction == IpEvaluation.Block) 
+                returnVal = true;
+
+            return returnVal;
+        }
 
 
 
