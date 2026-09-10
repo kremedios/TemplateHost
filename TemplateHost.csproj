@@ -35,6 +35,13 @@
     <EmbeddedResource Remove="_Archive/**/*.cs" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Remove="publish-win/**" />
+    <Content Remove="publish-winclear/**" />
+  </ItemGroup>
+
+
 <!--
   <ItemGroup>
     <None Update="crawler-user-agents.json">

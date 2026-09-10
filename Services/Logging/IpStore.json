@@ -131,9 +131,15 @@
     "AccessIsBlocked": false,
     "HitIsToBeRegistered": false
   },
-    {
+  {
     "Ip": "43.133.60.94",
     "Country": "Singapore",
+    "AccessIsBlocked": false,
+    "HitIsToBeRegistered": false
+  },
+  {
+    "Ip": "127.0.0.1",
+    "Country": "initialized",
     "AccessIsBlocked": false,
     "HitIsToBeRegistered": false
   }

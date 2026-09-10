@@ -15,6 +15,7 @@ using Host.Models.Datetime;
 using Host.Services.Geo;
 using Host.Controllers.Logging;
 using System.Net;
+using Host.Services.Logging;
 
 namespace Host.Services.Logging
 {
@@ -24,15 +25,18 @@ namespace Host.Services.Logging
         private readonly GeoLookupService _geoService;
         private readonly IHttpContextAccessor _http;        
         private readonly IWebHostEnvironment _env;
+        private readonly PageHitEvaluationManager _pageHitEvaluationManager;
 
         public PageHitService(GeoLookupService geoService,
                               IHttpContextAccessor http,
-                              IWebHostEnvironment env)
+                              IWebHostEnvironment env,
+                              PageHitEvaluationManager pageHitEvaluationManager)
         {
             _geoService = geoService;
             _http = http;
             _env = env;
             //_botDetector = botDetector;
+            _pageHitEvaluationManager = pageHitEvaluationManager;
         }
 
         /// <summary>
@@ -59,7 +63,16 @@ namespace Host.Services.Logging
             if (ip == "::1") ip = "127.0.0.1";
 
 
+            //== TEMP ONLY - begin =========================================================
+            //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - begin
+            InitialBotIpCollector.StoreIp(ip, "./Services/Logging/IpStore.json");
+            //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - end
+            //== TEMP ONLY - end ===========================================================
 
+
+
+
+            /**
             //=== Process the IP ===
             //Add IP for temporary storage and evaluation
             HitStore.Add(ip);
@@ -73,7 +86,7 @@ namespace Host.Services.Logging
                                                     TimeSpan.FromMinutes(nbrMinutesInTimeSpanWindow));
             //======================
 
-
+            **/
 
 
 
@@ -132,17 +145,20 @@ namespace Host.Services.Logging
 
 
 
-            //== Evaluate the IP =======
-            IpEvaluation IpAction = EvaluateIp(hit.IpAddress);
-            //=========================
+            //== Get the IP Evaluation previously stored in IpStore - begin ====================
+            //PageHitEvaluation PageHitAction = PageHitEvaluationManager.GetEvaluation(hit.IpAddress);
+             PageHitEvaluation PageHitAction = _pageHitEvaluationManager.GetEvaluation(hit.IpAddress);
+            //== Eet the IP Evaluation previously stored in IpStore - end ======================
 
-            if (IpAction == IpEvaluation.AllowAndDoNotRegister)
-                return Task.CompletedTask; //Exit method without logging anything
+
+            //Continue program execution without logging anything
+            if (PageHitAction == PageHitEvaluation.AllowAndDoNotRegister)
+                return Task.CompletedTask; 
             
 
 
 
-            // ===== FILE LOGGING  - begin =====
+            // ===== Do FILE LOGGING  - begin =====
             var year = hitTime.Year;
             var baseDir = Path.Combine(
                 Directory.GetCurrentDirectory(),
@@ -183,7 +199,7 @@ namespace Host.Services.Logging
 
 
             File.AppendAllText(logFile, line + Environment.NewLine);
-             // ===== FILE LOGGING  - end =====
+             // ===== Do FILE LOGGING  - end =======
 
 
 
@@ -196,40 +212,7 @@ namespace Host.Services.Logging
 
 
 
-        /**
-        Using IpStore as reference for IP addresses and bots and associated entities 
-        we return the action that guides the execution of the program, eg, blocking
-        access or not, and whether the hit should be registered.  Namely, we don't
-        want bots to examine, but we don't want to register their hits as it doesn't
-        reflect human hits.
 
-        Return one of:
-        - IpEvaluation.AllowAndRegister
-        - IpEvaluation.AllowAndDoNotRegister
-        - IpEvaluation.Block
-        */
-        private IpEvaluation EvaluateIp(string IpAddress)
-        {
-            //Determine if IpAddress is already in IpStore, i.e., if hit comes from non-human, e.g., bot
-            var IpRecord = IpStore.Get(IpAddress);
-            if (IpRecord is null)
-                return(IpEvaluation.AllowAndRegister);//IpAddress is not in bot file IpStore
-
-            var accessIsBlocked = IpRecord.AccessIsBlocked;
-            var hitIsToBeRegistered = IpRecord.HitIsToBeRegistered;
-
-            IpEvaluation returnVal = IpEvaluation.AllowAndRegister;//default
-            if (!accessIsBlocked && !hitIsToBeRegistered)
-                returnVal = IpEvaluation.AllowAndDoNotRegister;
-            else if (!accessIsBlocked && hitIsToBeRegistered )
-                returnVal = IpEvaluation.AllowAndRegister;
-            else if (accessIsBlocked)
-                returnVal = IpEvaluation.Block;
-            else
-                returnVal = IpEvaluation.AllowAndDoNotRegister;
-
-            return returnVal;
-        }
 
 
 
@@ -311,9 +294,10 @@ public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName
             var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 
             //Use IpStore as reference for non-human IP addresses
-            IpEvaluation ipAction = EvaluateIp(ip);
+            //PageHitEvaluation ipAction = PageHitEvaluationManager.GetEvaluation(ip);//EvaluateIp(ip);
+            PageHitEvaluation ipAction = _pageHitEvaluationManager.GetEvaluation(ip);//EvaluateIp(ip);
 
-            if (ipAction == IpEvaluation.Block) 
+            if (ipAction == PageHitEvaluation.Block) 
                 returnVal = true;
 
             return returnVal;

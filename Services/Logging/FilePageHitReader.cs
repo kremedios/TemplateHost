@@ -53,7 +53,11 @@ public string? GetLastHitDatetime(string area, string pageName)
 }
 
 
-
+    public bool BlockAccess()
+    {
+        //temp
+        return false;
+    }
 
 
 }

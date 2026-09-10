@@ -65,8 +65,8 @@ public static class IpStore
             {
                 Ip = ip,
                 Country = country,
-                AccessIsBlocked = null,
-                HitIsToBeRegistered = null
+                AccessIsBlocked = false,
+                HitIsToBeRegistered = true
             };
 
             _records.Add(ip, newRecord);

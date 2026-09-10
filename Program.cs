@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using System.IO;
+using Host.Models.Logging;
 
 /**
 Host associated
@@ -74,6 +75,12 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
 //    new BotDetector(Path.Combine(AppContext.BaseDirectory, "crawler-user-agents.json")));
 //For bot detection - end
 
+
+
+//For bot detection - begin
+builder.Services.AddSingleton<IpApiRateLimiter>();
+builder.Services.AddHttpClient<PageHitEvaluationManager>();
+//For bot detection - end
 
 builder.Services.AddHttpContextAccessor();
 
