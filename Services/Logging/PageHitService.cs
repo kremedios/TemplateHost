@@ -43,7 +43,7 @@ namespace Host.Services.Logging
         /// Logs a page hit, restricted by area-based role.
         /// </summary>
         //public Task LogPageHitAsync(string area, string pageName, HttpContext httpContext)
-        public Task LogPageHitAsync(string area, string pageName)        
+        public async Task LogPageHitAsync(string area, string pageName)        
         {
             var httpContext = _http.HttpContext;
             var user = httpContext.User;
@@ -63,11 +63,12 @@ namespace Host.Services.Logging
             if (ip == "::1") ip = "127.0.0.1";
 
 
-            //== TEMP ONLY - begin =========================================================
+            //== TEMP ONLY - USE ONLY AT URL PRE-LAUNCH begin =========================================================
+            //== Collect bot IP's
             //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - begin
             InitialBotIpCollector.StoreIp(ip, "./Services/Logging/IpStore.json");
             //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - end
-            //== TEMP ONLY - end ===========================================================
+            //== TEMP ONLY - USE ONLY AT URL PRE-LAUNCH end ===========================================================
 
 
 
@@ -87,6 +88,8 @@ namespace Host.Services.Logging
             //======================
 
             **/
+            
+
 
 
 
@@ -142,6 +145,14 @@ namespace Host.Services.Logging
                 Country = country,
                 HitTimeCentral = hitTime
             };
+
+
+
+            /**
+            Capture the webpage hit and evaluate it in background/asynchronously
+            */
+            var result = await _pageHitEvaluationManager.EvaluatePageHit(hit);
+
 
 
 

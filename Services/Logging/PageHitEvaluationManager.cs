@@ -4,18 +4,37 @@ using AppContractsSCO.Models.Common;
 using Host.Models.Logging;
 
 namespace Host.Services.Logging;
+/**
+Re using IpAPiRateLimiter in Check #2 in EvaluatePageHit(.) method:
 
+What this gives you in practice:
+
+Under normal/light traffic: essentially invisible — WaitAsync() returns 
+immediately, no noticeable delay to page-hit processing.
+Under heavy traffic (more than 45 hits/minute needing a reputation check): 
+    EvaluatePageHit calls simply take a bit longer to complete, queuing up in 
+    order, rather than any hit being dropped, blocked incorrectly, or the 
+    ip-api.com service rejecting/banning you for exceeding its limit.
+
+Since it's a singleton shared across the whole app, all callers 
+(not just this one method, if you ever add more ip-api.com calls 
+elsewhere) correctly share the same 45/minute budget.
+
+*/
 public class PageHitEvaluationManager
 {
     private readonly HttpClient _client;
      private readonly IpApiRateLimiter _rateLimiter;
+     private readonly BotDetector _botDetector;
 
 
     public PageHitEvaluationManager(HttpClient client,
-                                    IpApiRateLimiter rateLimiter)
+                                    IpApiRateLimiter rateLimiter,
+                                    BotDetector botDetector)
     {
         _client = client;
         _rateLimiter = rateLimiter;
+        _botDetector = botDetector;
     }
 
     /**
@@ -61,19 +80,63 @@ public class PageHitEvaluationManager
     method GetEvaluation() above.
 
     This should be called asynchronously.
+
+    RETURNS
+    - PageHitEvaluation enum value:
+        - PageHitEvaluation.AllowAndDoNotRegister
+        - PageHitEvaluation.AllowAndRegister
+        - PageHitEvaluation.
+
+    This method can be used for, but not limited to, populating IpStore,
+    which is the reference source for execution actions for any particular
+    IP.
     */
     public async Task<PageHitEvaluation> EvaluatePageHit(PageHit pageHit)
     {
         //============================================
         //Check #1
         var userAgent = pageHit.UserAgent;
-        if (LooksLikeBot(userAgent))
+        //if (LooksLikeBot(userAgent))
+        //    return PageHitEvaluation.AllowAndDoNotRegister;
+
+        // 1. Harmful/malicious bots — block outright
+        if (_botDetector.IsHarmfulBot(userAgent))
+            return PageHitEvaluation.Block;
+
+        // 2. Known, legitimate bots — allow through, but don't count as a human hit
+        if (_botDetector.IsKnownBot(userAgent))
             return PageHitEvaluation.AllowAndDoNotRegister;
         //============================================
 
 
         //============================================
         //Check #2
+        // 3. Unknown/unrecognized UA — fall through to IP reputation check
+
+        /**
+        This check uses IpApiRateLimiter class that throttles/limits requests to
+        ip-api.com in order to evaluate the give IP, eg, for bots. It is configured
+        to limit requests to ip-api.com to 45 requests per minute, which thereafter
+        would cause issues with ip-api.com. If the number of requests reaches this
+        threshold, execution will pause and will resume some time afterwards.
+
+        The method enclosing this code, EvaluatePageHit(.), is async so it's
+        perfectly fine to use the rate limiter IpApiRateLimiter.
+
+        In other words IpApiRateLimiter gives you in practice:
+
+        - Under normal/light traffic: essentially invisible — WaitAsync() returns immediately, 
+            no noticeable delay to page-hit processing.
+
+        - Under heavy traffic (more than 45 hits/minute needing a reputation check): 
+            EvaluatePageHit calls simply take a bit longer to complete, queuing up in order, 
+            rather than any hit being dropped, blocked incorrectly, or the ip-api.com service 
+            rejecting/banning you for exceeding its limit.
+
+        - Since it's a singleton shared across the whole app, all callers (not just this 
+            one method, if you ever add more ip-api.com calls elsewhere) correctly share 
+            the same 45/minute budget.
+        */
         var ip = pageHit.IpAddress;
 
         // Wait for a permit before calling ip-api.com — this pauses (asynchronously,
@@ -87,10 +150,6 @@ public class PageHitEvaluationManager
 
         var url = $"http://ip-api.com/json/{ip}?fields=isp,org,as,hosting,proxy,status";
 
-
-
-
-        var url = $"http://ip-api.com/json/{ip}?fields=isp,org,as,hosting,proxy,status";
 
         try
         {
@@ -107,13 +166,16 @@ public class PageHitEvaluationManager
         //============================================
     }
 
+
+    /**
+    NOT USED
     private static readonly string[] _botSignatures = new[]
     {
-        "bot", "crawl", "spider", "scrape", "slurp",
+        "/bot", " bot", "bot/", "Googlebot", "crawl", "spider", "scrape", "slurp",
         "curl", "wget", "python-requests", "python-urllib",
         "go-http-client", "okhttp", "postmanruntime", "axios",
         "headlesschrome", "phantomjs", "puppeteer", "playwright", "selenium",
-        "nmap", "nikto", "sqlmap", "masscan", "zgrab"
+        "nmap", "nikto", "sqlmap", "masscan", "zgrab", "HeadlessChrome"
     };
 
     private static bool LooksLikeBot(string userAgent)
@@ -123,4 +185,5 @@ public class PageHitEvaluationManager
         return _botSignatures.Any(sig =>
             userAgent.Contains(sig, StringComparison.OrdinalIgnoreCase));
     }
+    */
 }
