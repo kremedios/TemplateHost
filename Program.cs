@@ -71,8 +71,8 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
 
 
 //For bot detection - begin
-//builder.Services.AddSingleton<BotDetector>(sp =>
-//    new BotDetector(Path.Combine(AppContext.BaseDirectory, "crawler-user-agents.json")));
+builder.Services.AddSingleton<BotDetector>(sp =>
+    new BotDetector(Path.Combine(AppContext.BaseDirectory, "crawler-user-agents.json")));
 //For bot detection - end
 
 

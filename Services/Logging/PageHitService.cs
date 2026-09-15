@@ -315,6 +315,14 @@ public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName
         }
 
 
+        public HandleBot HandleKnownBot()
+        {
+            var returnVal = HandleBot.Redirect;
+            //if bot is to be blocked
+
+            //if bot is not blocked, then we direct to no image web page  
+            return returnVal;
+        }
 
 
 
