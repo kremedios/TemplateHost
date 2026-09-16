@@ -46,7 +46,7 @@ namespace Host.Services.Logging
         public async Task LogPageHitAsync(string area, string pageName)        
         {
             var httpContext = _http.HttpContext;
-            var user = httpContext.User;
+            //var user = httpContext.User;
 
             // Only allow users with the correct role for the given area
             // bool allowed = (string.Equals(area, "Rentals", StringComparison.OrdinalIgnoreCase) && user.IsInRole("Admin:Rentals"))
@@ -134,6 +134,8 @@ namespace Host.Services.Logging
                 // swallow geo lookup failures
             }
 
+
+            //Store IP and other relevant data in PageHit object (for convenience)
             var hit = new PageHit
             {
                 PageName = pageName,
@@ -149,7 +151,7 @@ namespace Host.Services.Logging
 
 
             /**
-            Capture the webpage hit and evaluate it in background/asynchronously
+            Capture the webpage hit and evaluate it asynchronously; we wait for how to handle the hit
             */
             var result = await _pageHitEvaluationManager.EvaluatePageHit(hit);
 
@@ -315,10 +317,11 @@ public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName
         }
 
 
-        public HandleBot HandleKnownBot()
+        public BotDestiny HandleKnownBot()
         {
-            var returnVal = HandleBot.Redirect;
+            var returnVal = BotDestiny.Redirect;
             //if bot is to be blocked
+
 
             //if bot is not blocked, then we direct to no image web page  
             return returnVal;

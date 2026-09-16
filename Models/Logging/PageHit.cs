@@ -1,6 +1,8 @@
+using AppContractsSCO.Models.Common;
+
 namespace Host.Models.Logging
 {
-    public class PageHit
+    public class PageHit : IPageHit
     {
         public string PageName { get; set; } = string.Empty;
         public DateTime HitTimeCentral { get; set; }

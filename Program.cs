@@ -85,6 +85,7 @@ builder.Services.AddHttpClient<PageHitEvaluationManager>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPageHitService, PageHitService>();
+builder.Services.AddScoped<IPageHitEvaluationManager, PageHitEvaluationManager>();
 
 //builder.Services.AddSingleton<IForSaleSettingsService>();
 builder.Services.AddScoped<IForSaleSettingsService, 
