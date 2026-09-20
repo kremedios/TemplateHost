@@ -153,7 +153,7 @@ namespace Host.Services.Logging
             /**
             Capture the webpage hit and evaluate it asynchronously; we wait for how to handle the hit
             */
-            var result = await _pageHitEvaluationManager.EvaluatePageHit(hit);
+         ////   var result = await _pageHitEvaluationManager.EvaluatePageHit(hit);
 
 
 

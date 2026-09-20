@@ -24,17 +24,20 @@ elsewhere) correctly share the same 45/minute budget.
 public class PageHitEvaluationManager
 {
     private readonly HttpClient _client;
-     private readonly IpApiRateLimiter _rateLimiter;
-     private readonly BotDetector _botDetector;
+    private readonly IHttpContextAccessor _http;  
+    private readonly IpApiRateLimiter _rateLimiter;
+    private readonly BotDetector _botDetector;
 
 
     public PageHitEvaluationManager(HttpClient client,
                                     IpApiRateLimiter rateLimiter,
-                                    BotDetector botDetector)
+                                    BotDetector botDetector,
+                                    IHttpContextAccessor httpContextAccessor)
     {
         _client = client;
         _rateLimiter = rateLimiter;
         _botDetector = botDetector;
+        _http = httpContextAccessor;
     }
 
     /**
@@ -91,11 +94,25 @@ public class PageHitEvaluationManager
     which is the reference source for execution actions for any particular
     IP.
     */
-    public async Task<PageHitEvaluation> EvaluatePageHit(PageHit pageHit)
+    public async Task<PageHitEvaluation> EvaluatePageHit(string area, string pageName)
     {
+        //Get http context
+        var httpContext = _http.HttpContext;
+
+        //Get IP address (localhost-safe)
+        var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        if (ip == "::1") ip = "127.0.0.1";
+
+        //Get http request
+        var request = httpContext.Request;
+
+        //Get User-Agent
+        var userAgent = request.Headers["User-Agent"].ToString();
+
+        //At this point we have: IP and User-Agent
+
         //============================================
         //Check #1
-        var userAgent = pageHit.UserAgent;
         //if (LooksLikeBot(userAgent))
         //    return PageHitEvaluation.AllowAndDoNotRegister;
 
@@ -137,7 +154,7 @@ public class PageHitEvaluationManager
             one method, if you ever add more ip-api.com calls elsewhere) correctly share 
             the same 45/minute budget.
         */
-        var ip = pageHit.IpAddress;
+        
 
         // Wait for a permit before calling ip-api.com — this pauses (asynchronously,
         // not blocking a thread) until a slot within the 45/minute limit opens up.

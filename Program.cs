@@ -210,6 +210,26 @@ builder.Services.AddControllersWithViews()
 
 var app = builder.Build();
 
+
+// =====================
+// MIDDLEWARE to block hostile IP addresses
+// =====================
+app.Use(async (context, next) =>
+{
+    var ip = context.Connection.RemoteIpAddress?.ToString();
+
+    if (ip != null && IpStore.Get(ip).AccessIsBlocked)
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        return;
+    }
+
+    await next();
+});
+
+
+
+
 // =====================
 // PIPELINE (MINIMAL)
 // =====================
