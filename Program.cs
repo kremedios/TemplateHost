@@ -85,7 +85,7 @@ builder.Services.AddHttpClient<PageHitEvaluationManager>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPageHitService, PageHitService>();
-builder.Services.AddScoped<IPageHitEvaluationManager, PageHitEvaluationManager>();
+//builder.Services.AddScoped<IPageHitEvaluationManager, PageHitEvaluationManager>();
 
 //builder.Services.AddSingleton<IForSaleSettingsService>();
 builder.Services.AddScoped<IForSaleSettingsService, 
@@ -213,15 +213,31 @@ var app = builder.Build();
 
 // =====================
 // MIDDLEWARE to block hostile IP addresses
+// If blocked, IP never reaches a controller
+//
+// This middleware runs not just once, but runs for *every* 
+// incoming request
 // =====================
 app.Use(async (context, next) =>
 {
     var ip = context.Connection.RemoteIpAddress?.ToString();
 
-    if (ip != null && IpStore.Get(ip).AccessIsBlocked)
+    if (ip != null)
     {
-        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-        return;
+        var record = IpStore.Get(ip);
+
+        // Blocked request
+        if (record.AccessIsBlocked)
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return;
+        }
+
+        // Allowed request: identify it as Human or BotCrawler
+        context.Items[RequestKeys.RequestType] =
+            record.HitIsToBeRegistered
+                ? RequestType.Human
+                : RequestType.BotCrawler;
     }
 
     await next();

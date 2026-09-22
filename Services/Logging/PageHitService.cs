@@ -41,11 +41,47 @@ namespace Host.Services.Logging
 
         /// <summary>
         /// Logs a page hit, restricted by area-based role.
+        /// This method only registers the web page hit if it's from a human.
         /// </summary>
         //public Task LogPageHitAsync(string area, string pageName, HttpContext httpContext)
         public async Task LogPageHitAsync(string area, string pageName)        
         {
             var httpContext = _http.HttpContext;
+
+
+            //There is Middleware located in Program.cs, which identifies 
+            //the type for *every* incoming IP request. 
+            //
+            //Interpret HttpContext as the *container representing the current request*
+            //
+            //NB Middleware already has handled IP addresses that had been deemed hostile.
+            //   Therefore, there are only 2 possible cases:
+            //   - Hit is from human
+            //   - Hit is from bot
+            //
+            //   We only count human hits, but still allow bot/crawler to access web page
+            var requestType =
+                httpContext.Items[RequestKeys.RequestType] is RequestType tempVariable
+                    ? tempVariable
+                    : RequestType.Human;
+
+            if (requestType == RequestType.BotCrawler)
+            {
+                //This is a bot/crawler hit
+                //We do not register any info
+                return;
+            }
+
+
+
+
+
+            //================================
+            //This is a human page hit - begin
+            //================================
+
+
+
             //var user = httpContext.User;
 
             // Only allow users with the correct role for the given area
@@ -96,15 +132,6 @@ namespace Host.Services.Logging
 
             // User-Agent
             var userAgent = request.Headers["User-Agent"].ToString();
-
-
-            // Bot Check -- skip logging entirely for known bots
-            //if (_botDetector.IsKnownBot(userAgent))
-            //{
-            //    return Task.CompletedTask;
-            //}
-
-
 
             var device =
                 userAgent.Contains("Mobile", StringComparison.OrdinalIgnoreCase) ? "Mobile" :
@@ -160,28 +187,31 @@ namespace Host.Services.Logging
 
             //== Get the IP Evaluation previously stored in IpStore - begin ====================
             //PageHitEvaluation PageHitAction = PageHitEvaluationManager.GetEvaluation(hit.IpAddress);
-             PageHitEvaluation PageHitAction = _pageHitEvaluationManager.GetEvaluation(hit.IpAddress);
+            // PageHitEvaluation PageHitAction = _pageHitEvaluationManager.GetEvaluation(hit.IpAddress);
             //== Eet the IP Evaluation previously stored in IpStore - end ======================
 
 
             //Continue program execution without logging anything
-            if (PageHitAction == PageHitEvaluation.AllowAndDoNotRegister)
-                return Task.CompletedTask; 
-            
+            //if (PageHitAction == PageHitEvaluation.AllowAndDoNotRegister)
+            //    return Task.CompletedTask;
+                
+
+ 
+
 
 
 
             // ===== Do FILE LOGGING  - begin =====
             var year = hitTime.Year;
             var baseDir = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "private",
-                area,
-                pageName,
-                "logs"
+                    Directory.GetCurrentDirectory(),
+                    "private",
+                    area,
+                    pageName,
+                    "logs"
             );
 
-            //Console.WriteLine($"@@@PageHitService: baseDir = {baseDir}");
+
             Directory.CreateDirectory(baseDir);
 
             var logFile = Path.Combine(baseDir, $"{pageName}-{year}.log");
@@ -197,13 +227,13 @@ namespace Host.Services.Logging
             string lineNbr = (lineCount + 1).ToString() + ":";
 
             var line =
-                lineNbr + " " +
-                $"{hit.HitTimeCentral:MM-dd-yy HH:mm} | " +
-                $"{hit.IpAddress} | " +
-                $"{hit.City}, {hit.State}, {hit.Country} | " +
-                //$"{hit.Device} | " +
-                $"{hit.IpAddress}" + 
-                $"{hit.UserAgent}";
+                    lineNbr + " " +
+                    $"{hit.HitTimeCentral:MM-dd-yy HH:mm} | " +
+                    $"{hit.IpAddress} | " +
+                    $"{hit.City}, {hit.State}, {hit.Country} | " +
+                    //$"{hit.Device} | " +
+                    $"{hit.IpAddress}" + 
+                    $"{hit.UserAgent}";
 
             ///////// try
             File.WriteAllText(lastHitDatetimeFile, $"{hit.HitTimeCentral:MM-dd-yy HH:mm}");
@@ -212,12 +242,13 @@ namespace Host.Services.Logging
 
 
             File.AppendAllText(logFile, line + Environment.NewLine);
-             // ===== Do FILE LOGGING  - end =======
+            // ===== Do FILE LOGGING  - end =======
 
+            return;
 
-
-
-            return Task.CompletedTask;
+            //================================
+            //This is a human page hit - end
+            //================================
         }
 
 

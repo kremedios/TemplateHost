@@ -184,23 +184,8 @@ public class PageHitEvaluationManager
     }
 
 
-    /**
-    NOT USED
-    private static readonly string[] _botSignatures = new[]
-    {
-        "/bot", " bot", "bot/", "Googlebot", "crawl", "spider", "scrape", "slurp",
-        "curl", "wget", "python-requests", "python-urllib",
-        "go-http-client", "okhttp", "postmanruntime", "axios",
-        "headlesschrome", "phantomjs", "puppeteer", "playwright", "selenium",
-        "nmap", "nikto", "sqlmap", "masscan", "zgrab", "HeadlessChrome"
-    };
 
-    private static bool LooksLikeBot(string userAgent)
-    {
-        if (string.IsNullOrWhiteSpace(userAgent)) return true;
 
-        return _botSignatures.Any(sig =>
-            userAgent.Contains(sig, StringComparison.OrdinalIgnoreCase));
-    }
-    */
+
+
 }
