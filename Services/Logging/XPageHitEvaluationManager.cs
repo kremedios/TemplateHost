@@ -1,4 +1,5 @@
-using System.Net.Http;
+
+/**using System.Net.Http;
 using System.Net.Http.Json;
 using AppContractsSCO.Models.Common;
 using Host.Models.Logging;
@@ -21,6 +22,8 @@ Since it's a singleton shared across the whole app, all callers
 elsewhere) correctly share the same 45/minute budget.
 
 */
+
+/**
 public class PageHitEvaluationManager
 {
     private readonly HttpClient _client;
@@ -52,6 +55,7 @@ public class PageHitEvaluationManager
     - PageHitEvaluation.AllowAndDoNotRegister
     - PageHitEvaluation.Block
     */
+    /**
     public PageHitEvaluation GetEvaluation(string ipAddress)
     {
         // Determine if IpAddress is already in IpStore, i.e., if hit comes from non-human, e.g., bot
@@ -94,7 +98,8 @@ public class PageHitEvaluationManager
     which is the reference source for execution actions for any particular
     IP.
     */
-    public async Task<PageHitEvaluation> EvaluatePageHit(string area, string pageName)
+
+/**    public async Task<PageHitEvaluation> EvaluatePageHit(string area, string pageName)
     {
         //Get http context
         var httpContext = _http.HttpContext;
@@ -158,7 +163,8 @@ public class PageHitEvaluationManager
 
         // Wait for a permit before calling ip-api.com — this pauses (asynchronously,
         // not blocking a thread) until a slot within the 45/minute limit opens up.
-        var acquired = await _rateLimiter.WaitAsync();
+
+/**        var acquired = await _rateLimiter.WaitAsync();
         if (!acquired)
         {
             // Queue was full — too many pending lookups. Fail safely.
@@ -189,3 +195,4 @@ public class PageHitEvaluationManager
 
 
 }
+*/

@@ -25,18 +25,18 @@ namespace Host.Services.Logging
         private readonly GeoLookupService _geoService;
         private readonly IHttpContextAccessor _http;        
         private readonly IWebHostEnvironment _env;
-        private readonly PageHitEvaluationManager _pageHitEvaluationManager;
+        //private readonly PageHitEvaluationManager _pageHitEvaluationManager;
 
         public PageHitService(GeoLookupService geoService,
                               IHttpContextAccessor http,
-                              IWebHostEnvironment env,
-                              PageHitEvaluationManager pageHitEvaluationManager)
+                              IWebHostEnvironment env)
+        //                      PageHitEvaluationManager pageHitEvaluationManager)
         {
             _geoService = geoService;
             _http = http;
             _env = env;
             //_botDetector = botDetector;
-            _pageHitEvaluationManager = pageHitEvaluationManager;
+            //_pageHitEvaluationManager = pageHitEvaluationManager;
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace Host.Services.Logging
             //
             //   We only count human hits, but still allow bot/crawler to access web page
             var requestType =
-                httpContext.Items[RequestKeys.RequestType] is RequestType tempVariable
-                    ? tempVariable
+                httpContext.Items[RequestKeys.RequestType] is RequestType localTempVariable
+                    ? localTempVariable
                     : RequestType.Human;
 
             if (requestType == RequestType.BotCrawler)
@@ -102,7 +102,7 @@ namespace Host.Services.Logging
             //== TEMP ONLY - USE ONLY AT URL PRE-LAUNCH begin =========================================================
             //== Collect bot IP's
             //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - begin
-            InitialBotIpCollector.StoreIp(ip, "./Services/Logging/IpStore.json");
+           ///// InitialBotIpCollector.StoreIp(ip, "./Services/Logging/IpStore.json");
             //=== ***Only use*** at prelaunch of URL publishing collect bot IP addresses - end
             //== TEMP ONLY - USE ONLY AT URL PRE-LAUNCH end ===========================================================
 
@@ -339,10 +339,10 @@ public Task<IEnumerable<string[]>> GetPageHitsAsync(string area, string pageName
 
             //Use IpStore as reference for non-human IP addresses
             //PageHitEvaluation ipAction = PageHitEvaluationManager.GetEvaluation(ip);//EvaluateIp(ip);
-            PageHitEvaluation ipAction = _pageHitEvaluationManager.GetEvaluation(ip);//EvaluateIp(ip);
+            //PageHitEvaluation ipAction = _pageHitEvaluationManager.GetEvaluation(ip);//EvaluateIp(ip);
 
-            if (ipAction == PageHitEvaluation.Block) 
-                returnVal = true;
+            //if (ipAction == PageHitEvaluation.Block) 
+            //    returnVal = true;
 
             return returnVal;
         }

@@ -13,6 +13,7 @@ using Host.Services.Logging;
 /**
 Shared Common Objects library AppContractsSCO associated
 */
+using AppContractsSCO.Models.Common;
 using AppContractsSCO.Services.Logging;
 using AppContractsSCO.Services.Security;
 using AppContractsSCO.Configuration;
@@ -79,8 +80,10 @@ builder.Services.AddSingleton<BotDetector>(sp =>
 
 //For bot detection - begin
 builder.Services.AddSingleton<IpApiRateLimiter>();
-builder.Services.AddHttpClient<PageHitEvaluationManager>();
+//builder.Services.AddHttpClient<PageHitEvaluationManager>();
 //For bot detection - end
+
+builder.Services.AddSingleton<IpEvaluationQueue>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -226,23 +229,37 @@ app.Use(async (context, next) =>
     {
         var record = IpStore.Get(ip);
 
-        // Blocked request
-        if (record.AccessIsBlocked)
+        if (record == null)
         {
+            // Unknown IP.
+            // Allow the request through immediately.
+            // Count this request as a Human hit, at least for the first time even if later it is
+            // identified as a BotCrawler.
+            context.Items[RequestKeys.RequestType] =
+                RequestType.Human;
+
+            // The IP will be evaluated in the background.
+            // Queue IP for background evaluation.
+            // It will be classified for future requests.
+            IpEvaluationQueue.TryQueue(ip);
+        }
+        else if (record.RequestType == RequestType.Blocked)
+        {
+            // Known hostile IP.
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             return;
         }
-
-        // Allowed request: identify it as Human or BotCrawler
-        context.Items[RequestKeys.RequestType] =
-            record.HitIsToBeRegistered
-                ? RequestType.Human
-                : RequestType.BotCrawler;
+        else
+        {
+            // Known Human or BotCrawler.
+            // Make the classification available to the rest of this request.
+            context.Items[RequestKeys.RequestType] =
+                record.RequestType;
+        }
     }
 
     await next();
 });
-
 
 
 
