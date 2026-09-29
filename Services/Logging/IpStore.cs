@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
+
 using AppContractsSCO.Models.Common;
 
 namespace Host.Services.Logging;
@@ -19,28 +21,41 @@ public static class IpStore
         }
     }
 
-    public static void Load(string filePath)
+   public static void Load(string filePath)
+{
+    if (!File.Exists(filePath))
+        return;
+
+    string json = File.ReadAllText(filePath);
+
+    var options = new JsonSerializerOptions
     {
-        string json = File.ReadAllText(filePath);
-
-        var records = JsonSerializer.Deserialize<List<IpRecord>>(json);
-
-        if (records == null)
-            return;
-
-        lock (_lock)
+        Converters =
         {
-            _records.Clear();
+            new JsonStringEnumConverter()
+        }
+    };
 
-            foreach (var record in records)
+    var records = JsonSerializer.Deserialize<List<IpRecord>>(
+        json,
+        options);
+
+    if (records == null)
+        return;
+
+    lock (_lock)
+    {
+        _records.Clear();
+
+        foreach (var record in records)
+        {
+            if (!string.IsNullOrWhiteSpace(record.Ip))
             {
-                if (!string.IsNullOrWhiteSpace(record.Ip))
-                {
-                    _records[record.Ip] = record;
-                }
+                _records[record.Ip] = record;
             }
         }
     }
+}
 
     public static IpRecord? Get(string ip)
     {
@@ -59,4 +74,42 @@ public static class IpStore
             _records[record.Ip] = record;
         }
     }
+
+
+
+    /**
+    What this method does:
+
+    1) Copies the current IP records while holding the lock.
+
+    2) Releases the lock before doing disk I/O, so requests aren't held up while the file is written.
+
+    3) Converts the records to readable JSON.
+
+    4)Writes the JSON to the specified file.
+    */
+    public static void Save(string filePath)
+    {
+        List<IpRecord> records;
+
+        lock (_lock)
+        {
+            records = _records.Values.ToList();
+        }
+
+        string json = JsonSerializer.Serialize(
+            records,
+            new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter()
+                }
+            });
+
+        File.WriteAllText(filePath, json);
+    }
+
+
 }

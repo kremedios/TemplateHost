@@ -5,6 +5,8 @@ namespace Host.Services.Logging;
 
 
 /**
+What TryQueue(ip) does
+
 For a new IP:
 
 TryQueue("123.45.67.89")
@@ -49,36 +51,59 @@ _pending
 
 This is a good fit for your goal of keeping the request middleware extremely lightweight.
 
+***We want one queue for the entire application.***
+
+                            IpEvaluationQueue
+                                    |
+                                    |
+            ________________________|________________________
+            |                                               |
+        Middleware                                  BackgroundService
+            |                                               |
+        TryQueue(ip)                                ReadAsync()
+
 The next step would be registering this queue as a singleton in Program.cs, because both the middleware and the background service need to use the same queue instance.
 */
 
+/**
+IpEvaluationQueue is part of the application infrastructure. It contains:
+
+- Channel<string>
+- ConcurrentDictionary
+- queueing behavior
+- tracking pending evaluations
+- methods for consuming the queue
+
+It isn't a data contract that your RCLs need to know about.
+*/
 
 
 public class IpEvaluationQueue
 {
-    private readonly Channel<string> _queue =
-        Channel.CreateUnbounded<string>();
+    private readonly Channel<IpEvaluationRequest> _queue =
+        Channel.CreateUnbounded<IpEvaluationRequest>();
 
     private readonly ConcurrentDictionary<string, byte> _pending = new();
 
-    public bool TryQueue(string ip)
+    public bool TryQueue(string ip, string userAgent)
     {
         // Don't queue the same IP more than once
-        // while it is waiting to be evaluated.
+        // while it is awaiting evaluation.
         if (!_pending.TryAdd(ip, 0))
             return false;
 
-        // Put the IP on the queue.
-        if (_queue.Writer.TryWrite(ip))
+        var request = new IpEvaluationRequest(ip, userAgent);
+
+        if (_queue.Writer.TryWrite(request))
             return true;
 
-        // If the write failed, allow the IP to be queued again later.
+        // Allow the IP to be queued again if writing failed.
         _pending.TryRemove(ip, out _);
 
         return false;
     }
 
-    public async ValueTask<string> ReadAsync(
+    public async ValueTask<IpEvaluationRequest> ReadAsync(
         CancellationToken cancellationToken)
     {
         return await _queue.Reader.ReadAsync(cancellationToken);
@@ -89,3 +114,5 @@ public class IpEvaluationQueue
         _pending.TryRemove(ip, out _);
     }
 }
+
+public record IpEvaluationRequest(string Ip, string UserAgent);

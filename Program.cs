@@ -83,7 +83,14 @@ builder.Services.AddSingleton<IpApiRateLimiter>();
 //builder.Services.AddHttpClient<PageHitEvaluationManager>();
 //For bot detection - end
 
+//We want only one queue for the whole application,.
 builder.Services.AddSingleton<IpEvaluationQueue>();
+
+///
+/// AddHostedService allows you to run a background service as part 
+/// of your ASP.NET Core application, without requiring a controller 
+/// to start and manage that service.
+builder.Services.AddHostedService<IpEvaluationBackgroundService>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -241,7 +248,13 @@ app.Use(async (context, next) =>
             // The IP will be evaluated in the background.
             // Queue IP for background evaluation.
             // It will be classified for future requests.
-            IpEvaluationQueue.TryQueue(ip);
+            //IpEvaluationQueue.TryQueue(ip);
+            var ipEvaluationQueue =
+                    context.RequestServices.GetRequiredService<IpEvaluationQueue>();
+
+            var userAgent = context.Request.Headers.UserAgent.ToString();
+
+            ipEvaluationQueue.TryQueue(ip, userAgent);
         }
         else if (record.RequestType == RequestType.Blocked)
         {
@@ -254,7 +267,7 @@ app.Use(async (context, next) =>
             // Known Human or BotCrawler.
             // Make the classification available to the rest of this request.
             context.Items[RequestKeys.RequestType] =
-                record.RequestType;
+                record.RequestType; 
         }
     }
 
@@ -276,12 +289,12 @@ app.UseAuthorization();
 // =====================
 app.Use(async (ctx, next) =>
 {
-    Console.WriteLine("=== REQUEST ===");
-    Console.WriteLine("Path: " + ctx.Request.Path);
-    Console.WriteLine("Cookie: " + ctx.Request.Headers.Cookie);
-    Console.WriteLine("User Authenticated: " + ctx.User.Identity?.IsAuthenticated);
+    //Console.WriteLine("=== REQUEST ===");
+    //Console.WriteLine("Path: " + ctx.Request.Path);
+    //Console.WriteLine("Cookie: " + ctx.Request.Headers.Cookie);
+    //Console.WriteLine("User Authenticated: " + ctx.User.Identity?.IsAuthenticated);
 
-    Console.WriteLine("User Name: " + ctx.User.Identity?.Name);
+    //Console.WriteLine("User Name: " + ctx.User.Identity?.Name);
 
     foreach (var claim in ctx.User.Claims)
     {
