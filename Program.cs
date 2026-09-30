@@ -225,6 +225,17 @@ var app = builder.Build();
 // MIDDLEWARE to block hostile IP addresses
 // If blocked, IP never reaches a controller
 //
+// This middleware is the point in which an IP and its UserAgent
+// is first intercepted--it occurs *before* any controller sees it.
+//
+// It is from this middleware that the IP is evalutated.
+//
+// The whole process is queued and evaluation occurs in background
+// processing resulting in very fast performance.  The only time
+// an uknown IP gets passed through without evaluation is the very
+// first time it reaches this middleware; and this occurs exactly
+// one time.
+//
 // This middleware runs not just once, but runs for *every* 
 // incoming request
 // =====================
@@ -246,14 +257,15 @@ app.Use(async (context, next) =>
                 RequestType.Human;
 
             // The IP will be evaluated in the background.
-            // Queue IP for background evaluation.
+            // We first queue IP for background evaluation.
             // It will be classified for future requests.
-            //IpEvaluationQueue.TryQueue(ip);
+            //IpEvaluationQueue.TryQueue(ip);//Replaced this with better version
             var ipEvaluationQueue =
                     context.RequestServices.GetRequiredService<IpEvaluationQueue>();
 
             var userAgent = context.Request.Headers.UserAgent.ToString();
 
+            // We use additional info provided by UserAgent to evaluate IP
             ipEvaluationQueue.TryQueue(ip, userAgent);
         }
         else if (record.RequestType == RequestType.Blocked)
@@ -280,6 +292,56 @@ app.Use(async (context, next) =>
 // PIPELINE (MINIMAL)
 // =====================
 app.UseRouting();
+
+
+
+
+
+// =====================
+// MIDDLEWARE page-rate-limit (to limit # page hits, eg, from a possibly hostile bot)
+// =====================
+app.Use(async (context, next) =>
+{
+    // Determine whether this request is an MVC controller action.
+    var controllerActionDescriptor =
+        context.GetEndpoint()?.Metadata
+            .GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
+
+    // If it isn't an MVC page request, don't rate-limit it.
+    if (controllerActionDescriptor == null)
+    {
+        await next();
+        return;
+    }
+
+    var ip = context.Connection.RemoteIpAddress?.ToString();
+
+    if (ip != null)
+    {
+        // We set limit to 100 web page hits in 5-minute time period
+        bool withinLimit =
+            PageRequestRateStore.IsWithinLimit(
+                ip,
+                100,
+                TimeSpan.FromMinutes(5));
+
+        if (!withinLimit)
+        {
+            context.Response.StatusCode =
+                StatusCodes.Status429TooManyRequests;
+
+            return;
+        }
+    }
+
+    await next();
+});
+
+
+
+
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

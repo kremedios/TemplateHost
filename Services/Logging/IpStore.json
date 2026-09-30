@@ -1,12 +1,7 @@
 [
   {
     "Ip": "::1",
-    "Country": "",
-    "RequestType": "Human"
-  },
-  {
-    "Ip": "127.0.0.1",
-    "Country": "",
+    "Country": "-",
     "RequestType": "Human"
   }
 ]

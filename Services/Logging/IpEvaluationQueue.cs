@@ -5,6 +5,38 @@ namespace Host.Services.Logging;
 
 
 /**
+This is the "queue" class that manages all incoming IPs and their
+associated UserAgent data.
+
+NB  We could use this queue structure to implement any process
+    in lieu of IP evaluation.
+
+This class is a wrapper around a process, in this case an evaluation 
+of IP & UserAgent values.  This class provides the ability to manage  
+IP & UserAgent evaluation in an efficieent queued process, which  
+maximizes throughput performance.
+
+
+OVERALL IDEA
+1. A request arrives
+
+The controller or middleware calls TryQueue()
+
+2. The queue accepts the work
+
+The request is stored for later processing, provided it isn't already pending.
+
+3. A worker retrieves the work
+
+The worker calls ReadAsync() and receives the next queued request.
+
+4. IpEvaluationRequest runs
+
+The worker performs the actual work and signals completion.
+
+
+
+
 What TryQueue(ip) does
 
 For a new IP:
@@ -74,7 +106,9 @@ IpEvaluationQueue is part of the application infrastructure. It contains:
 - tracking pending evaluations
 - methods for consuming the queue
 
-It isn't a data contract that your RCLs need to know about.
+It isn't a data contract that your RCLs need to know about,
+therefore this class needs to be in TemplateHost or whatever
+the host is.,
 */
 
 

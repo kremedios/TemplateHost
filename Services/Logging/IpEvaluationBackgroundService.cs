@@ -2,6 +2,8 @@ using Microsoft.Extensions.Hosting;
 
 using AppContractsSCO.Models.Common;
 
+using Host.Services.Geo;
+
 namespace Host.Services.Logging;
 
 /// <summary>
@@ -12,6 +14,7 @@ public class IpEvaluationBackgroundService : BackgroundService
 {
     private readonly IpEvaluationQueue _queue;
     private readonly string _ipStorePath;
+    private readonly GeoLookupService _geoLookupService;
 
     //public IpEvaluationBackgroundService(IpEvaluationQueue queue)
     //{
@@ -20,9 +23,11 @@ public class IpEvaluationBackgroundService : BackgroundService
 
     public IpEvaluationBackgroundService(
                 IpEvaluationQueue queue,
-                IHostEnvironment environment)
+                IHostEnvironment environment,
+                GeoLookupService geoLookupService)
     {
         _queue = queue;
+        _geoLookupService = geoLookupService;
 
         _ipStorePath = Path.Combine(
             environment.ContentRootPath,
@@ -83,8 +88,36 @@ public class IpEvaluationBackgroundService : BackgroundService
 
     private async Task EvaluateIpAsync(string ip, string userAgent)
     {
+        /// 1. Look up the hostname
+         string? hostName = null;
+
+         try
+            {
+             var hostEntry = await System.Net.Dns.GetHostEntryAsync(ip);
+             hostName = hostEntry.HostName;
+            }
+        catch
+        {
+            // No reverse DNS name found.
+        }
+
+        /// 2. Look up the geographic location
+        GeoLocation location = _geoLookupService.Lookup(ip);
+
+
+            Console.WriteLine(
+        $"IP EVALUATION: {ip} | " +
+        $"Host: {hostName ?? "(none)"} | " +
+        $"Country: {location.Country} | " +
+        $"City: {location.City} | " +
+        $"User-Agent: {userAgent}");
+        
+        
+        
         RequestType requestType;
        
+
+
 
         // Temporary classification logic.
         // We will replace this with the actual evaluation rules.
@@ -103,17 +136,12 @@ public class IpEvaluationBackgroundService : BackgroundService
         var record = new IpRecord
         {
             Ip = ip,
-            Country = "",
+            Country = location.Country,
             RequestType = requestType
         };
 
 
-//Console.WriteLine(
-//    $"IP EVALUATION: {ip} | " +
-//    $"User-Agent: {userAgent} | " +
-//    $"Result: {requestType}" + DateTime.Now);
-
-
+        /// Store the result
         IpStore.AddOrUpdate(record);
 
         //Persist the IpStore to json file
