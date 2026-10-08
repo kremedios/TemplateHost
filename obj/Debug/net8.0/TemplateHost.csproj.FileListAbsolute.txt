@@ -1,23 +1,77 @@
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.AssemblyReference.cache
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.GeneratedMSBuildEditorConfig.editorconfig
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfoInputs.cache
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfo.cs
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.CoreCompileInputs.cache
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cs
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cache
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cache
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cs
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.sourcelink.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/ForsaleRCL.staticwebassets.runtime.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/JuderemediosRCL.staticwebassets.runtime.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/RealEstateRCL.staticwebassets.runtime.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/publish-win/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/web.config
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/appsettings 8.50.59 AM.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/appsettings.Development.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/appsettings.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/crawler-user-agents.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/crawler-user-agents 8.51.00 AM.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/FINDME_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/Forsale/HondaCivic/HondaCivicSettings.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/realEstate/Keswick/KeswickForSaleSettings.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/crawler-user-agents.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/publish-win/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/publish-win/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.14.44 PM/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/publish-win/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/Services/Logging/crawler-user-agents.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 4.48.30 PM/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/publish-win/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/publish-win/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish-win 9.23.17 AM/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/appsettings.Development.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/appsettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/private/Forsale/HondaCivic/HondaCivicSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/private/realEstate/Keswick/KeswickForSaleSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/private/realEstate/Keswick/PropertyPageModelSettings.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.deps.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.runtimeconfig.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/IpStore.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore 2.24.42 PM.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore 2.26.26 PM.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/XXX_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/secure/chummy.key
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost.staticwebassets.runtime.json
@@ -82,6 +136,16 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/JuderemediosRCL.pdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/RealEstateRCL.pdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/AppContractsSCO.pdb
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.AssemblyReference.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.GeneratedMSBuildEditorConfig.editorconfig
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfoInputs.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.AssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.csproj.CoreCompileInputs.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.MvcApplicationPartsAssemblyInfo.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cache
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.RazorAssemblyInfo.cs
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.sourcelink.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/staticwebassets.build.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/staticwebassets.development.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/staticwebassets/msbuild.TemplateHost.Microsoft.AspNetCore.StaticWebAssets.props

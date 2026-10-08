@@ -67,6 +67,19 @@ public static class IpStore
         }
     }
 
+
+
+    /**
+    This method puts the specified record into the in-memory dictionary.
+
+    If the IP already exists, this:
+
+        _records[record.Ip] = record;
+
+    updates the existing record.
+
+    If it doesn't exist, it adds it.
+    */
     public static void AddOrUpdate(IpRecord record)
     {
         lock (_lock)
@@ -75,6 +88,14 @@ public static class IpStore
         }
     }
 
+
+
+
+    /**
+    This method ttakes the records currently held in memory and writes them to:
+
+        Services/Logging/IpStore.json
+    */
     public static void Save(string filePath)
     {
         List<IpRecord> records;
@@ -97,5 +118,8 @@ public static class IpStore
 
         File.WriteAllText(filePath, json);
     }
+
+
+    
 }
 

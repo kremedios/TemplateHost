@@ -1,0 +1,17 @@
+{
+  "Title": "Keswick Road Home",
+  "Fields": [
+    { "Label": "Price", "Value": "325,000" },
+    { "Label": "Availability", "Value": "For Sale" },
+    { "Label": "Bedrooms", "Value": "2" },
+    { "Label": "Bathrooms", "Value": "1.5" }
+  ],
+  "DescriptionBlocks": [
+    "Beautiful detached home in Baltimore...",
+    "Recently renovated kitchen and bath..."
+  ],
+  "Images": [
+    "/realEstate/Keswick/img1.jpg",
+    "/realEstate/Keswick/img2.jpg"
+  ]
+}

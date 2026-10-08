@@ -1,6 +1,3 @@
 LOH
-9/23/26
-JUst added:
-
-builder.Services.AddSingleton<IpEvaluationQueue>();
-Ask Chat next step re IpEvaluationBackgroundService
+10/08/26
+- Not sure if I completed coding of IpEvaluationBackgroundService.cs yet--check it out
