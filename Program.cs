@@ -222,22 +222,37 @@ var app = builder.Build();
 
 
 // =====================
-// MIDDLEWARE to block hostile IP addresses
-// If blocked, IP never reaches a controller
+// * I designed this middleware in lieu of using a service
+//   such as Cloudfare.
 //
-// This middleware is the point in which an IP and its UserAgent
-// is first intercepted--it occurs *before* any controller sees it.
+// * This middleware should be used for *all* web apps
 //
-// It is from this middleware that the IP is evalutated.
+// MIDDLEWARE that captures all web page requests and records
+// characteristics of every captured IP.  This middleware executes 
+// at the point in which an IP and its UserAgent is first
+// intercepted--it occurs *before* any controller sees it.
+//
+// It is in this middleware that an IP is evalutated.
 //
 // The whole process is queued and evaluation occurs in background
 // processing resulting in very fast performance.  The only time
 // an uknown IP gets passed through without evaluation is the very
 // first time it reaches this middleware; and this occurs exactly
-// one time.
+// one time (where the web page request is initially recorded and
+// is considered originating from a human).
 //
 // This middleware runs not just once, but runs for *every* 
-// incoming request
+// incoming request.
+
+// CASE #1: Hostile IP addresses 
+// We block these IPs.  If blocked, IP never reaches a controller
+//
+// CASE #2: Non-hostile bots/webcrawlers
+// These are allowed in but are not registered as "human" hits
+//
+// CASE #3: Human hits
+// These are allowed in and are registered as (human) "hits"
+// (thereby reflecting true web page engagement, i.e., by humans)
 // =====================
 app.Use(async (context, next) =>
 {

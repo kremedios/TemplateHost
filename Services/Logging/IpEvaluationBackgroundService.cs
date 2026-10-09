@@ -9,6 +9,26 @@ namespace Host.Services.Logging;
 /// <summary>
 /// This service will run in the background and take IP addresses 
 /// from the queue for evaluation, without making incoming web requests wait.
+/// 
+/// Here is the sequence in more detail:
+///
+/// 1. ASP.NET Core starts your application.
+///
+/// 2. The host starts IpEvaluationBackgroundService because you registered it with AddHostedService.
+///
+/// 3. Its ExecuteAsync() method begins running and waits for queued requests.
+///
+/// 4. Your middleware receives an HTTP request and queues an IP evaluation when appropriate.
+///
+/// 5. The background service retrieves that queued request and calls EvaluateIpAsync(request).
+///
+/// 6. The evaluation determines the classification and updates IpStore.
+///
+/// 7. The background service can wait for work without blocking the thread that handles the incoming HTTP request.
+///
+/// One important distinction: AddHostedService starts the background service; it does not directly 
+/// call EvaluateIpAsync(). The call happens inside the background service's queue-processing loop.
+///
 /// </summary>
 public class IpEvaluationBackgroundService : BackgroundService
 {
@@ -43,9 +63,10 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
     protected override async Task ExecuteAsync(
-        CancellationToken stoppingToken)
+                                                CancellationToken stoppingToken)
     ///
-    /// ExecuteAsync() runs automatically when the application starts.
+    /// ExecuteAsync() runs automatically when the application starts. It
+    /// waits for queued requests.
     ///
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -62,11 +83,8 @@ public class IpEvaluationBackgroundService : BackgroundService
                 ///
                 /// EvaluateIpAsync(ip) is where we'll eventually determine whether the IP is Human, BotCrawler, or Blocked
                 /// 
-                 //await EvaluateIpAsync(ip);
-                //await EvaluateIpAsync(request.Ip, request.UserAgent);
-                await EvaluateIpAsync(
-                    request.Ip,
-                    request.UserAgent); 
+                await EvaluateIpAsync(request.Ip,
+                                      request.UserAgent); 
             }
             catch (Exception ex)
             {
@@ -77,7 +95,6 @@ public class IpEvaluationBackgroundService : BackgroundService
                 ///
                 /// finally removes the IP from the pending set even if evaluation throws an exception.
                 /// 
-                //_queue.EvaluationComplete(ip);
                 _queue.EvaluationComplete(request.Ip);
             }
         }
@@ -122,16 +139,17 @@ public class IpEvaluationBackgroundService : BackgroundService
         //UserAgent evaluation
         // Temporary classification logic.
         // We will replace this with the actual evaluation rules.
-        if (userAgent.Contains("bot", StringComparison.OrdinalIgnoreCase) ||
-            userAgent.Contains("crawler", StringComparison.OrdinalIgnoreCase) ||
-            userAgent.Contains("spider", StringComparison.OrdinalIgnoreCase))
-        {
-            requestType = RequestType.BotCrawler;
-        }
+        if (!string.IsNullOrWhiteSpace(userAgent) &&
+                (userAgent.Contains("bot", StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains("crawler", StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains("spider", StringComparison.OrdinalIgnoreCase)))
+            {
+                requestType = RequestType.BotCrawler;
+            }
         else
-        {
-            requestType = RequestType.Human;
-        }
+            {
+                requestType = RequestType.Human;
+            }
 
 
 
@@ -145,7 +163,7 @@ public class IpEvaluationBackgroundService : BackgroundService
         };
 
 
-        // Store the result--in-memory dictionary updated
+        // Store the result so that the in-memory dictionary is updated
         IpStore.AddOrUpdate(record);
 
         //Persist the IpStore to json file
