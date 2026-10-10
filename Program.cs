@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc.Controllers;
+
 using System.IO;
-using Host.Models.Logging;
+
+//using Host.Models.Logging;
 
 /**
 Host associated
@@ -79,17 +82,24 @@ builder.Services.AddSingleton<BotDetector>(sp =>
 
 
 //For bot detection - begin
+/// This telss ASP.NET Core's dependency injection  (DI) container
+/// to create one shared instance of the specified class 
+/// throughout the lifetime of the application.
 builder.Services.AddSingleton<IpApiRateLimiter>();
 //builder.Services.AddHttpClient<PageHitEvaluationManager>();
 //For bot detection - end
 
-//We want only one queue for the whole application,.
+/// We want only one queue for the whole application.
+/// This telss ASP.NET Core's dependency injection  (DI) container
+/// to create one shared instance of the specified class 
+/// throughout the lifetime of the application.
 builder.Services.AddSingleton<IpEvaluationQueue>();
 
 ///
 /// AddHostedService allows you to run a background service as part 
 /// of your ASP.NET Core application, without requiring a controller 
-/// to start and manage that service.
+/// to start and manage that service.  This command starts the
+/// specified hosted service upon web app start up.
 builder.Services.AddHostedService<IpEvaluationBackgroundService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -222,6 +232,32 @@ var app = builder.Build();
 
 
 // =====================
+// REQUIRED for images contained within an RCL to work
+//
+// Placed before middleware so that images, CSS, JavaScript, and other static files
+// to be served without consuming page-request limits.
+//
+// Moving static files before middleware execution means requests for those files 
+// won't pass through your IP-screening middleware. That is appropriate for the 
+// page-request counter we're designing, although it also means those requests 
+// won't be rejected by its existing Blocked check.
+// =====================
+app.UseStaticFiles();
+
+
+
+// =====================
+// PIPELINE (MINIMAL)
+//
+// Placed before middleware, which makes endpoint metadata available, helping us 
+// identify eligible page requests.
+// =====================
+app.UseRouting();
+
+
+
+
+// =====================
 // * I designed this middleware in lieu of using a service
 //   such as Cloudfare.
 //
@@ -256,6 +292,58 @@ var app = builder.Build();
 // =====================
 app.Use(async (context, next) =>
 {
+    ///////////////////////////////////////
+    /// Identify MVC controller requests
+    /// 
+    /// That is, check if it's a web page request (as opposed to, say, an image request)
+    var endpoint = context.GetEndpoint();
+
+    bool isMvcControllerAction =
+        endpoint?.Metadata.GetMetadata<ControllerActionDescriptor>() != null;
+
+    if (!isMvcControllerAction)
+    {
+        await next();
+        return;
+    }
+
+
+
+
+
+
+
+    ///////////////////////////////////////
+    /// Page hit limiter
+    /// 
+    /// Limits page requests from a given IP to less than 100 times in 5 minutes
+    /// 
+    /// It does not permanently block the IP; it tells the client to wait 60 
+    /// seconds before trying again.
+    var ip = context.Connection.RemoteIpAddress?.ToString();
+
+    if (ip != null &&
+        !PageRequestRateStore.IsWithinLimit(
+            ip,
+            100,
+            TimeSpan.FromMinutes(5)))
+    {
+        context.Response.StatusCode =
+            StatusCodes.Status429TooManyRequests;
+
+        context.Response.Headers.RetryAfter = "60";
+
+        context.Response.ContentType = "text/plain";
+        await context.Response.WriteAsync(
+            "The server is temporarily busy. Please try again in a minute.");
+
+        return;
+    }
+
+
+
+
+
     var ip = context.Connection.RemoteIpAddress?.ToString();
 
     if (ip != null)
@@ -303,10 +391,6 @@ app.Use(async (context, next) =>
 
 
 
-// =====================
-// PIPELINE (MINIMAL)
-// =====================
-app.UseRouting();
 
 
 
@@ -383,10 +467,7 @@ app.Use(async (ctx, next) =>
 
 
 
-// =====================
-// REQUIRED for images contained within an RCL to work
-// =====================
-app.UseStaticFiles();
+
 
 
 

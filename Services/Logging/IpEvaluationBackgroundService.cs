@@ -105,6 +105,7 @@ public class IpEvaluationBackgroundService : BackgroundService
 
     private async Task EvaluateIpAsync(string ip, string userAgent)
     {
+        /////////////////////////////////////////
         /// 1. Look up the hostname--DNS lookup
          string? hostName = null;
 
@@ -118,6 +119,9 @@ public class IpEvaluationBackgroundService : BackgroundService
             // No reverse DNS name found.
         }
 
+
+
+        /////////////////////////////////////////
         /// 2. Look up the geographic location--GeoIP lookup
         GeoLocation location = _geoLookupService.Lookup(ip);
 
@@ -136,6 +140,7 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
+        /////////////////////////////////////////
         //UserAgent evaluation
         // Temporary classification logic.
         // We will replace this with the actual evaluation rules.
@@ -153,7 +158,7 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
-
+        /////////////////////////////////////////
         //Create IpRecord
         var record = new IpRecord
         {
@@ -163,9 +168,14 @@ public class IpEvaluationBackgroundService : BackgroundService
         };
 
 
+
+        /////////////////////////////////////////
         // Store the result so that the in-memory dictionary is updated
         IpStore.AddOrUpdate(record);
 
+
+
+        /////////////////////////////////////////
         //Persist the IpStore to json file
         //NB  We are doing this in the background service
         IpStore.Save(_ipStorePath);

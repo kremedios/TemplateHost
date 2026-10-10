@@ -56,5 +56,47 @@ public static class PageRequestRateStore
             return true;
         }
     }
+
+
+
+
+    /// <summary>
+    /// This method removes expired timestamps and deletes IP entries that 
+    /// no longer have any requests in the active window.
+    /// </summary>
+    /// 
+    /// <param name="timeWindow"></param>
+    /// 
+    public static void CleanupInactiveIps(TimeSpan timeWindow)
+    {
+        var cutoff = DateTime.UtcNow - timeWindow;
+
+        lock (_lock)
+        {
+            var inactiveIps = new List<string>();
+
+            foreach (var entry in _requests)
+            {
+                entry.Value.RemoveAll(t => t < cutoff);
+
+                if (entry.Value.Count == 0)
+                {
+                    inactiveIps.Add(entry.Key);
+                }
+            }
+
+            foreach (var ip in inactiveIps)
+            {
+                _requests.Remove(ip);
+            }
+        }
+    }
+
+
+
+
+
+
+
 }
 

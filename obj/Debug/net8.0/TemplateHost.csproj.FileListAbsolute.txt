@@ -68,9 +68,6 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/private/realEstate/Keswick/PropertyPageModelSettings.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.deps.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.runtimeconfig.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/IpStore.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore 2.24.42 PM.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore 2.26.26 PM.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/XXX_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/secure/chummy.key
