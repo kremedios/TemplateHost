@@ -101,6 +101,7 @@ builder.Services.AddSingleton<IpEvaluationQueue>();
 /// to start and manage that service.  This command starts the
 /// specified hosted service upon web app start up.
 builder.Services.AddHostedService<IpEvaluationBackgroundService>();
+builder.Services.AddHostedService<PageRequestRateCleanupService>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -251,6 +252,8 @@ app.UseStaticFiles();
 //
 // Placed before middleware, which makes endpoint metadata available, helping us 
 // identify eligible page requests.
+//
+// Identifies the MVC controller action
 // =====================
 app.UseRouting();
 
@@ -310,11 +313,8 @@ app.Use(async (context, next) =>
 
 
 
-
-
-
     ///////////////////////////////////////
-    /// Page hit limiter
+    /// Per IP page request rate limiter
     /// 
     /// Limits page requests from a given IP to less than 100 times in 5 minutes
     /// 
@@ -343,8 +343,7 @@ app.Use(async (context, next) =>
 
 
 
-
-    var ip = context.Connection.RemoteIpAddress?.ToString();
+    //var ip = context.Connection.RemoteIpAddress?.ToString();
 
     if (ip != null)
     {
@@ -383,53 +382,6 @@ app.Use(async (context, next) =>
             // Make the classification available to the rest of this request.
             context.Items[RequestKeys.RequestType] =
                 record.RequestType; 
-        }
-    }
-
-    await next();
-});
-
-
-
-
-
-
-
-
-// =====================
-// MIDDLEWARE page-rate-limit (to limit # page hits, eg, from a possibly hostile bot)
-// =====================
-app.Use(async (context, next) =>
-{
-    // Determine whether this request is an MVC controller action.
-    var controllerActionDescriptor =
-        context.GetEndpoint()?.Metadata
-            .GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>();
-
-    // If it isn't an MVC page request, don't rate-limit it.
-    if (controllerActionDescriptor == null)
-    {
-        await next();
-        return;
-    }
-
-    var ip = context.Connection.RemoteIpAddress?.ToString();
-
-    if (ip != null)
-    {
-        // We set limit to 100 web page hits in 5-minute time period
-        bool withinLimit =
-            PageRequestRateStore.IsWithinLimit(
-                ip,
-                100,
-                TimeSpan.FromMinutes(5));
-
-        if (!withinLimit)
-        {
-            context.Response.StatusCode =
-                StatusCodes.Status429TooManyRequests;
-
-            return;
         }
     }
 
