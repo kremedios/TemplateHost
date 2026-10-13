@@ -1,5 +1,8 @@
 using Microsoft.Extensions.Hosting;
 
+using System.Net;
+using System.Net.Sockets;
+
 using AppContractsSCO.Models.Common;
 
 using Host.Services.Geo;
@@ -32,6 +35,7 @@ namespace Host.Services.Logging;
 /// </summary>
 public class IpEvaluationBackgroundService : BackgroundService
 {
+    private readonly ILogger<IpEvaluationBackgroundService> _logger;
     private readonly IpEvaluationQueue _queue;
     private readonly string _ipStorePath;
     private readonly GeoLookupService _geoLookupService;
@@ -44,7 +48,8 @@ public class IpEvaluationBackgroundService : BackgroundService
     public IpEvaluationBackgroundService(
                 IpEvaluationQueue queue,
                 IHostEnvironment environment,
-                GeoLookupService geoLookupService)
+                GeoLookupService geoLookupService,
+                ILogger<IpEvaluationBackgroundService> logger)
     {
         _queue = queue;
         _geoLookupService = geoLookupService;
@@ -54,6 +59,8 @@ public class IpEvaluationBackgroundService : BackgroundService
             "Services",
             "Logging",
             "IpStore.json");
+
+        _logger = logger;
     }
 
 
@@ -83,12 +90,20 @@ public class IpEvaluationBackgroundService : BackgroundService
                 ///
                 /// EvaluateIpAsync(ip) is where we'll eventually determine whether the IP is Human, BotCrawler, or Blocked
                 /// 
-                await EvaluateIpAsync(request.Ip,
-                                      request.UserAgent); 
+                //await EvaluateIpAsync(request.Ip,
+                //                      request.UserAgent); 
+                await EvaluateIpAsync(
+                                        request.Ip,
+                                        request.UserAgent,
+                                        stoppingToken);
             }
             catch (Exception ex)
             {
-                // TODO: Log the exception.
+                // Log the exception.
+                    _logger.LogError(
+                                ex,
+                                "Error evaluating IP address {Ip}.",
+                                request.Ip);
             }
             finally
             {
@@ -103,10 +118,13 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
-    private async Task EvaluateIpAsync(string ip, string userAgent)
+    private async Task EvaluateIpAsync(string ip, 
+                                       string userAgent, 
+                                       CancellationToken cancellationToken)
     {
         /////////////////////////////////////////
         /// 1. Look up the hostname--DNS lookup
+        /**
          string? hostName = null;
 
          try
@@ -117,6 +135,39 @@ public class IpEvaluationBackgroundService : BackgroundService
         catch
         {
             // No reverse DNS name found.
+        }
+        */
+
+        string? hostName = null;
+
+        try
+        {
+            if (IPAddress.TryParse(ip, out var address))
+            {
+                var hostEntry = await Dns.GetHostEntryAsync(address);
+
+                var candidateHostName = hostEntry.HostName;
+
+                if (!string.IsNullOrWhiteSpace(candidateHostName))
+                {
+                    var resolvedAddresses =
+                        await Dns.GetHostAddressesAsync(candidateHostName);
+
+                    if (resolvedAddresses.Any(
+                            resolvedAddress => resolvedAddress.Equals(address)))
+                    {
+                        hostName = candidateHostName;
+                    }
+                }
+            }
+        }
+        catch (SocketException)
+        {
+            // DNS lookup failed. This does not mean the IP is hostile.
+        }
+        catch (ArgumentException)
+        {
+            // Invalid input for a DNS lookup.
         }
 
 
@@ -135,26 +186,33 @@ public class IpEvaluationBackgroundService : BackgroundService
         
         
         
-        RequestType requestType;
+        //RequestType requestType;
        
 
 
 
         /////////////////////////////////////////
-        //UserAgent evaluation
-        // Temporary classification logic.
-        // We will replace this with the actual evaluation rules.
-        if (!string.IsNullOrWhiteSpace(userAgent) &&
-                (userAgent.Contains("bot", StringComparison.OrdinalIgnoreCase) ||
-                userAgent.Contains("crawler", StringComparison.OrdinalIgnoreCase) ||
-                userAgent.Contains("spider", StringComparison.OrdinalIgnoreCase)))
-            {
-                requestType = RequestType.BotCrawler;
-            }
+        // UserAgent evaluation
+        // Classification logic.
+    
+
+      
+        RequestType requestType;
+
+        if (IsVerifiedSearchCrawler(userAgent, hostName))
+        {
+            requestType = RequestType.BotCrawler;
+        }
         else
-            {
-                requestType = RequestType.Human;
-            }
+        {
+            requestType =
+                ClassifyUserAgent(userAgent) ?? RequestType.Human;
+        }
+
+
+
+
+
 
 
 
@@ -182,6 +240,107 @@ public class IpEvaluationBackgroundService : BackgroundService
 
         await Task.CompletedTask;
     }
+
+
+
+
+
+
+
+    private static RequestType? ClassifyUserAgent(string userAgent)
+    {
+        if (string.IsNullOrWhiteSpace(userAgent))
+        {
+            return null;
+        }
+
+        string[] crawlerMarkers =
+        [
+            "bot",
+            "crawler",
+            "spider",
+            "slurp",
+            "bingpreview",
+            "facebookexternalhit",
+            "twitterbot",
+            "linkedinbot",
+            "googleother"
+        ];
+
+        if (crawlerMarkers.Any(marker =>
+            userAgent.Contains(
+                marker,
+                StringComparison.OrdinalIgnoreCase)))
+        {
+            return RequestType.BotCrawler;
+        }
+
+        bool looksLikeBrowser =
+            userAgent.Contains("Mozilla/", StringComparison.OrdinalIgnoreCase) &&
+            (
+                userAgent.Contains("Chrome/", StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains("Firefox/", StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains("Safari/", StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains("Edg/", StringComparison.OrdinalIgnoreCase)
+            );
+
+        if (looksLikeBrowser)
+        {
+            return RequestType.Human;
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+    private static bool IsVerifiedSearchCrawler(
+        string userAgent,
+        string? verifiedHostName)
+    {
+        if (string.IsNullOrWhiteSpace(userAgent) ||
+            string.IsNullOrWhiteSpace(verifiedHostName))
+        {
+            return false;
+        }
+
+        string host = verifiedHostName.TrimEnd('.');
+
+        bool claimsGooglebot =
+            userAgent.Contains(
+                "Googlebot",
+                StringComparison.OrdinalIgnoreCase);
+
+        bool claimsBingbot =
+            userAgent.Contains(
+                "bingbot",
+                StringComparison.OrdinalIgnoreCase);
+
+        bool verifiedGoogleHost =
+            host.EndsWith(
+                ".googlebot.com",
+                StringComparison.OrdinalIgnoreCase) ||
+            host.Equals(
+                "googlebot.com",
+                StringComparison.OrdinalIgnoreCase);
+
+        bool verifiedBingHost =
+            host.EndsWith(
+                ".search.msn.com",
+                StringComparison.OrdinalIgnoreCase);
+
+        return (claimsGooglebot && verifiedGoogleHost) ||
+            (claimsBingbot && verifiedBingHost);
+    }
+
+
+
+
 
 
 }

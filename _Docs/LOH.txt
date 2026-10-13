@@ -1,13 +1,3 @@
 LOH
-10/11/26
-- Next step: Handle requests with no IP address
-
-Your middleware currently obtains the IP address with:
-
-var ip = context.Connection.RemoteIpAddress?.ToString();
-
-If ip is null, your current code skips rate limiting entirely for that request. This is unusual in a normal web request, but it's worth deciding how to handle it.
-
-My recommendation: Reject a request with HTTP 400 if no client IP address is available, rather than allow it to bypass the rate limiter. Before changing anything, let's check whether your application ever encounters this situation.
-
-Would you like to add a small log message for missing IP addresses first, so we can see whether it actually happens?
+10/13/26
+-Step 5 — Correct how uncertain IP addresses are classified

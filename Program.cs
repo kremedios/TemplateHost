@@ -322,8 +322,28 @@ app.Use(async (context, next) =>
     /// seconds before trying again.
     var ip = context.Connection.RemoteIpAddress?.ToString();
 
-    if (ip != null &&
-        !PageRequestRateStore.IsWithinLimit(
+
+
+    //////////////////////////////////////
+    /// Reject requests that have no IP addresses
+    if (string.IsNullOrWhiteSpace(ip))
+    {
+        context.Response.StatusCode =
+            StatusCodes.Status400BadRequest;
+
+        //Note that this statement involves an asynchronous I/O, which returns a Task
+        await context.Response.WriteAsync(
+            "A client IP address is required.");
+
+        return;
+    }
+
+
+
+
+    //////////////////////////////////////
+    /// Rate limiter
+    if (!PageRequestRateStore.IsWithinLimit(
             ip,
             100,
             TimeSpan.FromMinutes(5)))
@@ -345,8 +365,8 @@ app.Use(async (context, next) =>
 
     //var ip = context.Connection.RemoteIpAddress?.ToString();
 
-    if (ip != null)
-    {
+    //if (true)
+    //{
         var record = IpStore.Get(ip);
 
         if (record == null)
@@ -383,7 +403,7 @@ app.Use(async (context, next) =>
             context.Items[RequestKeys.RequestType] =
                 record.RequestType; 
         }
-    }
+    //}
 
     await next();
 });
