@@ -197,6 +197,7 @@ public class IpEvaluationBackgroundService : BackgroundService
     
 
       
+
         RequestType requestType;
 
         if (IsVerifiedSearchCrawler(userAgent, hostName))
@@ -206,9 +207,8 @@ public class IpEvaluationBackgroundService : BackgroundService
         else
         {
             requestType =
-                ClassifyUserAgent(userAgent) ?? RequestType.Human;
+                ClassifyUserAgent(userAgent) ?? RequestType.Unknown;
         }
-
 
 
 
@@ -247,50 +247,65 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
-    private static RequestType? ClassifyUserAgent(string userAgent)
+
+private static RequestType? ClassifyUserAgent(string userAgent)
+{
+    if (string.IsNullOrWhiteSpace(userAgent))
     {
-        if (string.IsNullOrWhiteSpace(userAgent))
-        {
-            return null;
-        }
-
-        string[] crawlerMarkers =
-        [
-            "bot",
-            "crawler",
-            "spider",
-            "slurp",
-            "bingpreview",
-            "facebookexternalhit",
-            "twitterbot",
-            "linkedinbot",
-            "googleother"
-        ];
-
-        if (crawlerMarkers.Any(marker =>
-            userAgent.Contains(
-                marker,
-                StringComparison.OrdinalIgnoreCase)))
-        {
-            return RequestType.BotCrawler;
-        }
-
-        bool looksLikeBrowser =
-            userAgent.Contains("Mozilla/", StringComparison.OrdinalIgnoreCase) &&
-            (
-                userAgent.Contains("Chrome/", StringComparison.OrdinalIgnoreCase) ||
-                userAgent.Contains("Firefox/", StringComparison.OrdinalIgnoreCase) ||
-                userAgent.Contains("Safari/", StringComparison.OrdinalIgnoreCase) ||
-                userAgent.Contains("Edg/", StringComparison.OrdinalIgnoreCase)
-            );
-
-        if (looksLikeBrowser)
-        {
-            return RequestType.Human;
-        }
-
         return null;
     }
+
+    string[] crawlerMarkers =
+    [
+        "bot",
+        "crawler",
+        "spider",
+        "slurp",
+        "bingpreview",
+        "facebookexternalhit",
+        "twitterbot",
+        "linkedinbot",
+        "googleother"
+    ];
+
+    bool claimsToBeCrawler = crawlerMarkers.Any(marker =>
+        userAgent.Contains(
+            marker,
+            StringComparison.OrdinalIgnoreCase));
+
+    if (claimsToBeCrawler)
+    {
+        // A crawler claim alone does not establish identity.
+        // The caller must verify recognized search crawlers separately.
+        return RequestType.Unknown;
+    }
+
+    bool looksLikeBrowser =
+        userAgent.Contains(
+            "Mozilla/",
+            StringComparison.OrdinalIgnoreCase) &&
+        (
+            userAgent.Contains(
+                "Chrome/",
+                StringComparison.OrdinalIgnoreCase) ||
+            userAgent.Contains(
+                "Firefox/",
+                StringComparison.OrdinalIgnoreCase) ||
+            userAgent.Contains(
+                "Safari/",
+                StringComparison.OrdinalIgnoreCase) ||
+            userAgent.Contains(
+                "Edg/",
+                StringComparison.OrdinalIgnoreCase)
+        );
+
+    if (looksLikeBrowser)
+    {
+        return RequestType.Human;
+    }
+
+    return null;
+}
 
 
 
