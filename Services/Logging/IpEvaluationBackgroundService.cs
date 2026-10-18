@@ -218,11 +218,13 @@ public class IpEvaluationBackgroundService : BackgroundService
 
         /////////////////////////////////////////
         //Create IpRecord
+        
         var record = new IpRecord
         {
             Ip = ip,
             Country = location.Country,
-            RequestType = requestType
+            RequestType = requestType,
+            LastEvaluatedUtc = DateTime.UtcNow
         };
 
 
@@ -248,64 +250,89 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
-private static RequestType? ClassifyUserAgent(string userAgent)
-{
-    if (string.IsNullOrWhiteSpace(userAgent))
+
+    private static RequestType? ClassifyUserAgent(string userAgent)
     {
-        return null;
-    }
+        if (string.IsNullOrWhiteSpace(userAgent))
+        {
+            return RequestType.Unknown;
+        }
 
-    string[] crawlerMarkers =
-    [
-        "bot",
-        "crawler",
-        "spider",
-        "slurp",
-        "bingpreview",
-        "facebookexternalhit",
-        "twitterbot",
-        "linkedinbot",
-        "googleother"
-    ];
+        string[] crawlerMarkers =
+        [
+            "bot",
+            "crawler",
+            "spider",
+            "slurp",
+            "bingpreview",
+            "facebookexternalhit",
+            "twitterbot",
+            "linkedinbot",
+            "googleother"
+        ];
 
-    bool claimsToBeCrawler = crawlerMarkers.Any(marker =>
-        userAgent.Contains(
-            marker,
-            StringComparison.OrdinalIgnoreCase));
+        bool claimsToBeCrawler = crawlerMarkers.Any(marker =>
+            userAgent.Contains(
+                marker,
+                StringComparison.OrdinalIgnoreCase));
 
-    if (claimsToBeCrawler)
-    {
-        // A crawler claim alone does not establish identity.
-        // The caller must verify recognized search crawlers separately.
+        if (claimsToBeCrawler)
+        {
+            // A crawler claim alone does not establish identity.
+            // Verified search crawlers are handled separately.
+            return RequestType.Unknown;
+        }
+
+        string[] nonBrowserMarkers =
+        [
+            "curl/",
+            "wget/",
+            "python-requests/",
+            "python-urllib/",
+            "go-http-client/",
+            "libwww-perl",
+            "java/",
+            "okhttp/",
+            "postmanruntime/",
+            "powershell/"
+        ];
+
+        bool looksLikeNonBrowserClient = nonBrowserMarkers.Any(marker =>
+            userAgent.Contains(
+                marker,
+                StringComparison.OrdinalIgnoreCase));
+
+        if (looksLikeNonBrowserClient)
+        {
+            return RequestType.Unknown;
+        }
+
+        bool looksLikeBrowser =
+            userAgent.Contains(
+                "Mozilla/",
+                StringComparison.OrdinalIgnoreCase) &&
+            (
+                userAgent.Contains(
+                    "Chrome/",
+                    StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains(
+                    "Firefox/",
+                    StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains(
+                    "Safari/",
+                    StringComparison.OrdinalIgnoreCase) ||
+                userAgent.Contains(
+                    "Edg/",
+                    StringComparison.OrdinalIgnoreCase)
+            );
+
+        if (looksLikeBrowser)
+        {
+            return RequestType.Human;
+        }
+
         return RequestType.Unknown;
     }
-
-    bool looksLikeBrowser =
-        userAgent.Contains(
-            "Mozilla/",
-            StringComparison.OrdinalIgnoreCase) &&
-        (
-            userAgent.Contains(
-                "Chrome/",
-                StringComparison.OrdinalIgnoreCase) ||
-            userAgent.Contains(
-                "Firefox/",
-                StringComparison.OrdinalIgnoreCase) ||
-            userAgent.Contains(
-                "Safari/",
-                StringComparison.OrdinalIgnoreCase) ||
-            userAgent.Contains(
-                "Edg/",
-                StringComparison.OrdinalIgnoreCase)
-        );
-
-    if (looksLikeBrowser)
-    {
-        return RequestType.Human;
-    }
-
-    return null;
-}
 
 
 

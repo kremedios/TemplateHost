@@ -60,18 +60,23 @@ namespace Host.Services.Logging
             //   - Hit is from bot
             //
             //   We only count human hits, but still allow bot/crawler to access web page
-            var requestType =
-                httpContext.Items[RequestKeys.RequestType] is RequestType localTempVariable
-                    ? localTempVariable
-                    : RequestType.Human;
-
-            if (requestType == RequestType.BotCrawler)
+            if (httpContext == null)
             {
-                //This is a bot/crawler hit
-                //We do not register any info
                 return;
             }
 
+            if (httpContext.Items[RequestKeys.RequestType] is not RequestType requestType)
+            {
+                // No classification is available; do not count this as a likely human hit.
+                return;
+            }
+
+            if (requestType != RequestType.Human)
+            {
+                // Only requests classified as Human are counted.
+                // BotCrawler, Unknown, and Blocked are not registered as human hits.
+                return;
+            }
 
 
 

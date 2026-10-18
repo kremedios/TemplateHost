@@ -6,6 +6,15 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Include="private\GeoIP\GeoLite2-City.mmdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+
   <ItemGroup>
     <ProjectReference Include="..\..\RCL_projects\ForsaleRCL\ForsaleRCL.csproj" />
     <ProjectReference Include="..\..\RCL_projects\JuderemediosRCL\JuderemediosRCL.csproj" />

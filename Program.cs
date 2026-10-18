@@ -57,6 +57,7 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
     return new GeoLookupService(dbPath);
 });
 */
+
 builder.Services.AddSingleton<GeoLookupService>(sp =>
 {
     var env = sp.GetRequiredService<IWebHostEnvironment>();
@@ -71,6 +72,8 @@ builder.Services.AddSingleton<GeoLookupService>(sp =>
 
     return new GeoLookupService(dbPath);
 });
+
+
 //For GeoIP - end
 
 
@@ -261,6 +264,8 @@ app.UseRouting();
 
 
 // =====================
+// MIDDLEWARE
+//
 // * I designed this middleware in lieu of using a service
 //   such as Cloudfare.
 //
@@ -363,47 +368,39 @@ app.Use(async (context, next) =>
 
 
 
-    //var ip = context.Connection.RemoteIpAddress?.ToString();
 
-    //if (true)
-    //{
-        var record = IpStore.Get(ip);
+    var record = IpStore.Get(ip);
 
-        if (record == null)
-        {
-            // Unknown IP.
-            // Allow the request through immediately.
-            // Count this request as a Human hit, at least for the first time even if later it is
-            // identified as a BotCrawler.
-            context.Items[RequestKeys.RequestType] =
-                RequestType.Human;
+    if (record == null)
+    {
+        context.Items[RequestKeys.RequestType] = RequestType.Human;
+        Console.WriteLine($"NEW IP QUEUED FOR EVALUATION: {ip}");
+    }
+    else if (record.RequestType == RequestType.Blocked)
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        return;
+    }
+    else
+    {
+        context.Items[RequestKeys.RequestType] = record.RequestType;
+    }
 
-            // The IP will be evaluated in the background.
-            // We first queue IP for background evaluation.
-            // It will be classified for future requests.
-            //IpEvaluationQueue.TryQueue(ip);//Replaced this with better version
-            var ipEvaluationQueue =
-                    context.RequestServices.GetRequiredService<IpEvaluationQueue>();
+    if (record == null ||
+        (record.RequestType == RequestType.Unknown &&
+        (record.LastEvaluatedUtc == DateTime.MinValue ||
+        DateTime.UtcNow - record.LastEvaluatedUtc >= TimeSpan.FromHours(24))))
+    {
+        var ipEvaluationQueue =
+            context.RequestServices.GetRequiredService<IpEvaluationQueue>();
 
-            var userAgent = context.Request.Headers.UserAgent.ToString();
+        var userAgent = context.Request.Headers.UserAgent.ToString();
 
-            // We use additional info provided by UserAgent to evaluate IP
-            ipEvaluationQueue.TryQueue(ip, userAgent);
-        }
-        else if (record.RequestType == RequestType.Blocked)
-        {
-            // Known hostile IP.
-            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            return;
-        }
-        else
-        {
-            // Known Human or BotCrawler.
-            // Make the classification available to the rest of this request.
-            context.Items[RequestKeys.RequestType] =
-                record.RequestType; 
-        }
-    //}
+        ipEvaluationQueue.TryQueue(ip, userAgent);
+    }
+
+
+
 
     await next();
 });
