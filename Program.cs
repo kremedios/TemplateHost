@@ -396,7 +396,10 @@ app.Use(async (context, next) =>
 
         var userAgent = context.Request.Headers.UserAgent.ToString();
 
-        ipEvaluationQueue.TryQueue(ip, userAgent);
+       if (ipEvaluationQueue.TryQueue(ip, userAgent))
+       {
+            Console.WriteLine($"NEW IP QUEUED FOR EVALUATION: {ip}");
+       }
     }
 
 

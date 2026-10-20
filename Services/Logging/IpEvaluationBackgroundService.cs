@@ -69,51 +69,50 @@ public class IpEvaluationBackgroundService : BackgroundService
 
 
 
+   
     protected override async Task ExecuteAsync(
-                                                CancellationToken stoppingToken)
-    ///
-    /// ExecuteAsync() runs automatically when the application starts. It
-    /// waits for queued requests.
-    ///
+        CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            ///
-            /// ReadAsync() waits for an IP to arrive in the queue. It doesn't repeatedly poll the queue.
-            /// 
-            //string ip = await _queue.ReadAsync(stoppingToken);
-            IpEvaluationRequest request =
-                    await _queue.ReadAsync(stoppingToken);
+            IpEvaluationRequest request;
 
             try
             {
-                ///
-                /// EvaluateIpAsync(ip) is where we'll eventually determine whether the IP is Human, BotCrawler, or Blocked
-                /// 
-                //await EvaluateIpAsync(request.Ip,
-                //                      request.UserAgent); 
+                request = await _queue.ReadAsync(stoppingToken);
+            }
+            catch (OperationCanceledException)
+                when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
+
+            try
+            {
                 await EvaluateIpAsync(
-                                        request.Ip,
-                                        request.UserAgent,
-                                        stoppingToken);
+                    request.Ip,
+                    request.UserAgent,
+                    stoppingToken);
+            }
+            catch (OperationCanceledException)
+                when (stoppingToken.IsCancellationRequested)
+            {
+                break;
             }
             catch (Exception ex)
             {
-                // Log the exception.
-                    _logger.LogError(
-                                ex,
-                                "Error evaluating IP address {Ip}.",
-                                request.Ip);
+                _logger.LogError(
+                    ex,
+                    "Error evaluating IP address {Ip}.",
+                    request.Ip);
             }
             finally
             {
-                ///
-                /// finally removes the IP from the pending set even if evaluation throws an exception.
-                /// 
                 _queue.EvaluationComplete(request.Ip);
             }
         }
     }
+
 
 
 

@@ -114,8 +114,26 @@ the host is.,
 
 public class IpEvaluationQueue
 {
+
+    /**
+        * 1000 — maximum number of requests waiting in the queue.
+
+        * FullMode = Wait — when full, the channel does not discard existing queued requests. 
+        Your TryWrite() call returns false rather than waiting for space.
+
+        * SingleReader = true — your application has one background service consuming the queue.
+
+        * SingleWriter = false — multiple incoming web requests can attempt to enqueue work concurrently.
+    */
     private readonly Channel<IpEvaluationRequest> _queue =
-        Channel.CreateUnbounded<IpEvaluationRequest>();
+        Channel.CreateBounded<IpEvaluationRequest>(
+            new BoundedChannelOptions(1000)
+            {
+                FullMode = BoundedChannelFullMode.Wait,
+                SingleReader = true,
+                SingleWriter = false
+            });
+
 
     private readonly ConcurrentDictionary<string, byte> _pending = new();
 
