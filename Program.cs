@@ -301,6 +301,17 @@ app.UseRouting();
 app.Use(async (context, next) =>
 {
     ///////////////////////////////////////
+    // Exclude the root URL. Allow its redirect to proceed,
+    // but do not perform IP evaluation or page-rate limiting.
+    if (context.Request.Path == "/")
+    {
+        await next();
+        return;
+    }
+
+
+
+    ///////////////////////////////////////
     /// Identify MVC controller requests
     /// 
     /// That is, check if it's a web page request (as opposed to, say, an image request)

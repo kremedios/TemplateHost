@@ -16,9 +16,11 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/private/realEstate/Keswick/PropertyPageModelSettings.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.deps.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/publish/TemplateHost.runtimeconfig.json
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/ME2_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/XXX_IpStore.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/secure/chummy.key
+/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/GeoIP/GeoLite2-City.mmdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost.staticwebassets.runtime.json
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/TemplateHost.deps.json
@@ -107,5 +109,3 @@
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.pdb
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/TemplateHost.genruntimeconfig.cache
 /Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/obj/Debug/net8.0/ref/TemplateHost.dll
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/Services/Logging/IpStore.json
-/Users/juderemedios/Documents/_KEN/projects/mvc_projects/TemplateHost/bin/Debug/net8.0/private/GeoIP/GeoLite2-City.mmdb
