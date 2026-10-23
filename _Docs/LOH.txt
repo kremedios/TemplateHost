@@ -1,3 +1,5 @@
 LOH
-10/20/26
-- My recommendation: Let's review ClassifyUserAgent() and IsVerifiedSearchCrawler() next. We already have that code from your background service, so you don't need to paste it again. I'll identify any changes that are genuinely worthwhile before deployment, without expanding the scope unnecessarily.
+10/23/26
+- Changes needed:
+    - Illegal photos still showing up local and remote
+    - On remote site Lindsay's direct phone # still not changed

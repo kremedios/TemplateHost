@@ -384,8 +384,13 @@ app.Use(async (context, next) =>
 
     if (record == null)
     {
+        /**
         context.Items[RequestKeys.RequestType] = RequestType.Human;
         Console.WriteLine($"NEW IP QUEUED FOR EVALUATION: {ip}");
+        */
+        // Do not count the first request from an unknown IP.
+        // The background service will evaluate the IP.
+        Console.WriteLine($"NEW IP DETECTED: {ip}");
     }
     else if (record.RequestType == RequestType.Blocked)
     {

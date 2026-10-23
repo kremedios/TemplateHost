@@ -55,9 +55,10 @@ namespace Host.Services.Logging
             //Interpret HttpContext as the *container representing the current request*
             //
             //NB Middleware already has handled IP addresses that had been deemed hostile.
-            //   Therefore, there are only 2 possible cases:
+            //   Therefore, there are only 3 possible cases:
             //   - Hit is from human
             //   - Hit is from bot
+            //   - Hit is categorized as unknown
             //
             //   We only count human hits, but still allow bot/crawler to access web page
             if (httpContext == null)

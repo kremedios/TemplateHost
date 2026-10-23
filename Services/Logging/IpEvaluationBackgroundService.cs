@@ -222,6 +222,7 @@ public class IpEvaluationBackgroundService : BackgroundService
         {
             Ip = ip,
             Country = location.Country,
+            HostName = hostName ?? "",
             RequestType = requestType,
             LastEvaluatedUtc = DateTime.UtcNow
         };
@@ -257,10 +258,26 @@ public class IpEvaluationBackgroundService : BackgroundService
             return RequestType.Unknown;
         }
 
+        
+
+                // Headless browsers are commonly used for automated requests.
+        if (userAgent.Contains(
+            "HeadlessChrome/",
+            StringComparison.OrdinalIgnoreCase) ||
+            userAgent.Contains(
+            "HeadlessFirefox/",
+            StringComparison.OrdinalIgnoreCase))
+        {
+            return RequestType.Unknown;
+        }
+
+
+
         string[] crawlerMarkers =
         [
             "bot",
             "crawler",
+            "censysinspect",
             "spider",
             "slurp",
             "bingpreview",
@@ -282,6 +299,8 @@ public class IpEvaluationBackgroundService : BackgroundService
             return RequestType.Unknown;
         }
 
+
+
         string[] nonBrowserMarkers =
         [
             "curl/",
@@ -293,8 +312,17 @@ public class IpEvaluationBackgroundService : BackgroundService
             "java/",
             "okhttp/",
             "postmanruntime/",
-            "powershell/"
+            "powershell/",
+            "headlesschrome/",
+            "headlessfirefox/",
+            "phantomjs",
+            "selenium",
+            "playwright",
+            "puppeteer"
         ];
+
+
+        
 
         bool looksLikeNonBrowserClient = nonBrowserMarkers.Any(marker =>
             userAgent.Contains(
